@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Map 3D</title>
+<script type="text/javascript" src="http://map.vworld.kr/js/vworldMapInit.js.do?version=2.0&apiKey=63A56745-0BAA-3AAB-9861-E41F0C368C5D"></script>
+</head>
+
+<body>
+ <div id="vmap" style="width:100%;height:960px;left:0px;top:0px"></div>
+  controlDensity :
+   <select id="contDensity" onchange="this.value">
+    <option value="vw.DensityType.BASIC">BASIC</option>
+    <option value="vw.DensityType.EMPTY">EMPTY</option>
+    <option value="vw.DensityType.FULL">FULL</option>
+   </select>   
+  interactionDensity :
+   <select id="interDensity" onchange="this.value">
+    <option value="vw.DensityType.BASIC">BASIC</option>
+    <option value="vw.DensityType.EMPTY">EMPTY</option
+    <option value="vw.DensityType.FULL">FULL</option>
+   </select>
+<input type="button" onclick="vwmap()" value="지도호출">
+ <script type="text/javascript">
+ 
+ function vwmap(){
+ var controlDensity = document.getElementById("contDensity").value;
+ var interactionDensity = document.getElementById("interDensity").value;
+
+ var mapOptions = new vw.MapOptions(vw.BasemapType.GRAPHIC,"",
+          eval(controlDensity),
+          eval(interactionDensity));
+
+ map = new vw.Map("vmap", mapOptions);
+  }
+
+ </script>
+</body>
+</html>
