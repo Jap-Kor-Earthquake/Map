@@ -50,12 +50,12 @@ export default class Map {
         lat > 0 ? `${Math.abs(lat)}&#176;` + ' N' : `${Math.abs(lat)}&#176;` + ' S'
       document.getElementById('lng').innerHTML = lngContent
     });
-    this.displayData('2000-01-01', '2018-12-31', initMagnitude);
+    this.displayData('2000-01-01', '2020-09-01', initMagnitude);
     this.popup();
   }
 
   displayData(start, end, mag){
-    const magnitude = Boolean(typeof mag === "undefined") ? 4.5 : mag;
+    const magnitude = Boolean(typeof mag === "undefined") ? 1.0 : mag;
     
     const url = `https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=${start}&endtime=${end}&minmagnitude=${magnitude}`;
     fetch(url).then((response) => {
@@ -79,7 +79,7 @@ export default class Map {
   }
 
   addSource(start, end, mag) {
-    const magnitude = Boolean(typeof mag === "undefined") ? 4.5 : mag;
+    const magnitude = Boolean(typeof mag === "undefined") ? 1.0 : mag;
     this.map.addSource(`${this.earthquake}`, {
       "type": "geojson",
       "data": `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${start}&endtime=${end}&minmagnitude=${magnitude}`
