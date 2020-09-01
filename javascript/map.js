@@ -243,16 +243,16 @@ export default class Map {
     const content = (
       '<div class="popup-content-container">' +
         '<div class="info-container">' +
-          `<div class="data-type">Date:</div><div class="info">${this.dateFormatter(new Date(properties.time))}</div>` +
+          `<div class="data-type">날짜:</div><div class="info">${this.dateFormatter(new Date(properties.time))}</div>` +
         '</div>' +
         '<div class="info-container">' +
-          `<div class="data-type">Location:</div><div class="info">${properties.place}</div>` +
+          `<div class="data-type">전원지:</div><div class="info">${properties.place}</div>` +
         '</div>' +
         '<div class="info-container">' +
-          `<div class="data-type">Magnitude:</div><div class="info">${properties.mag}</div>` +
+          `<div class="data-type">규모:</div><div class="info">${properties.mag}</div>` +
         '</div>' +
         `<div class="link-container">` +
-          `<a href="${properties.url}" target="_blank">View Detail</a>` +
+          `<a href="${properties.url}" target="_blank">상세 보기</a>` +
         '</div>' +
       '</div>'
     )
