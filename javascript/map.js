@@ -29,7 +29,7 @@ export default class Map {
     });
 
     this.map.on('load', () => {
-      this.addSource('2000-01-01', '2018-12-31', initMagnitude)
+      this.addSource('2000-01-01', '2019-12-31', initMagnitude)
       this.addPointLayer();
     })
 
