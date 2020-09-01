@@ -55,7 +55,7 @@ export default class Map {
   }
 
   displayData(start, end, mag){
-    const magnitude = Boolean(typeof mag === "undefined") ? 1.0 : mag;
+    const magnitude = Boolean(typeof mag === "undefined") ? 2.5 : mag;
     
     const url = `https://earthquake.usgs.gov/fdsnws/event/1/count?format=geojson&starttime=${start}&endtime=${end}&minmagnitude=${magnitude}`;
     fetch(url).then((response) => {
@@ -79,7 +79,7 @@ export default class Map {
   }
 
   addSource(start, end, mag) {
-    const magnitude = Boolean(typeof mag === "undefined") ? 1.0 : mag;
+    const magnitude = Boolean(typeof mag === "undefined") ? 2.5 : mag;
     this.map.addSource(`${this.earthquake}`, {
       "type": "geojson",
       "data": `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=${start}&endtime=${end}&minmagnitude=${magnitude}`
