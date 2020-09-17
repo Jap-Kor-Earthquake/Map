@@ -1,0 +1,2429 @@
+
+
+
+<!doctype html>
+<html lang="ko">
+	
+<!-- Mirrored from necis.kma.go.kr/necis-dbf/usermain/new/common/mainMapForm.do by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Sep 2020 10:39:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+		<meta charset="UTF-8">
+		<meta name="robots" content="noindex, nofollow">
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/openlayers3/ol.css" type="text/css">
+		<link rel="icon" href="https://necis.kma.go.kr/necis-dbf/img/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/js/plugins/axicon/axicon/axicon.min.css" />
+		<link rel="stylesheet" type="text/css" href="https://necis.kma.go.kr/necis-dbf/js/plugins/jquery-ui/themes/base/jquery-ui.min.css" />
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/css/jquery-ui.theme.min.css" />
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/css/common.css" />
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/css/style.css" />
+		<link rel="stylesheet" href="https://necis.kma.go.kr/necis-dbf/css/pop.css" />
+		
+		<script src="https://necis.kma.go.kr/necis-dbf/openlayers3/ol.js" type="text/javascript"></script>
+		<script src="https://necis.kma.go.kr/necis-dbf/js/plugins/jquery/dist/jquery.min.js"></script>
+		<script src="https://necis.kma.go.kr/necis-dbf/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+		<script src="https://necis.kma.go.kr/necis-dbf/js/plugins/jquery-ui/ui/i18n/datepicker-ko.js"></script>
+		<script src="https://necis.kma.go.kr/necis-dbf/js/user/daily/jquery.blockUI.js"></script>
+		<script src="https://necis.kma.go.kr/necis-dbf/js/new/common.js"></script>
+		
+
+		<title>국가지진종합정보시스템(NECIS)</title>
+	</head>
+  
+	<body>
+		<div class="wrap gis">
+			
+	  		<div class="fl gis_set">
+	  			<h1>
+			      <a href="https://necis.kma.go.kr/necis-dbf/usermain/new/common/userMainNewForm.do"  title="홈">NECIS 국가지진종합정보시스템</a>
+			    </h1>
+			    <form id="" name="mainForm" action="https://necis.kma.go.kr/necis-dbf/user/earthquake/earthquake_event_map.do" method="post">
+			    <div class="section"> 
+			        <div class="article">
+		        		<h2>시간</h2>
+					    <div class="article_body">
+					    	<div class="select_wrap">
+					            <label for="last7">
+					              <input type="radio" id="last7" name="selectDate" value="last7days" onclick="fn_select_change(this.value);">최근 7일</label>
+					            <label for="last30">
+					              <input type="radio" id="last30" name="selectDate" value="last30days" selected onclick="fn_select_change(this.value);">최근 30일</label>
+					            <label for="custom">
+					              <input type="radio" id="custom" name="selectDate" value="custom" onclick="fn_select_change(this.value);" checked>사용자지정</label>
+				            </div>
+				            <div class="period">
+					            <input type="text" id="startDate" placeholder="YYYY-MM-DD" readonly class="date" dataformat="from" title="시작일" />
+					            <img class="ui-datepicker-trigger" src="https://necis.kma.go.kr/necis-dbf/img/btn_calendar.png" alt="시작날짜를 선택해주세요." title="시작날짜를 선택해주세요."> ~
+					            <input type="text" id="endDate" placeholder="YYYY-MM-DD" readonly class="date" dataformat="to"  title="종료일" />
+					           	<img class="ui-datepicker-trigger" src="https://necis.kma.go.kr/necis-dbf/img/btn_calendar.png" alt="종료날짜를 선택해주세요." title="종료날짜를 선택해주세요.">
+				            </div>
+				        </div>
+				        <h2>규모</h2>
+				        <div class="article_body s_input">
+					        <input type="text" title="규모범위 시작" onblur="setOutFocusMagnitude(this);" id="startMagnitude" maxlength="4" onkeydown="onlyNumber();" name="startMagnitude" value="2.0"> ~
+					        <input type="text" title="규모범위 종료" onblur="setOutFocusMagnitude(this);" id="endMagnitude" maxlength="4" onkeydown="onlyNumber();"name="endMagnitude" value="10.0">
+					        <input type="hidden" name="startDepth" value="">
+          					<input type="hidden" name="endDepth" value="">
+				        </div>
+				        <h2>지명 및 지역</h2>
+				        <div class="article_body">
+					        <span class="search_word">
+					        	<input type="text" id="searchWord" name="searchWord" class="large" title="지명 및 지역" placeholder="검색어입력" value="">
+					        	<select title="시도 선택" name="searchKeyword" id="searchKeyword" onchange="document.mainForm.searchWord.value = this.value;">
+						            <option value="">전체</option>
+						            <option value="서울">서울</option>
+						            <option value="인천">인천</option>
+						            <option value="광주">광주</option>
+						            <option value="부산">부산</option>
+						            <option value="대구">대구</option>
+						            <option value="경기">경기</option>
+						            <option value="강원">강원</option>
+						            <option value="대전">대전</option>
+						            <option value="울산">울산</option>
+						            <option value="전북">전북</option>
+						            <option value="충북">충북</option>
+						            <option value="충남">충남</option>
+						            <option value="전남">전남</option>
+						            <option value="제주">제주</option>
+						            <option value="경북">경북</option>
+						            <option value="경남">경남</option>
+						            <option value="세종">세종</option>
+					          	</select>
+					        </span>
+					        <div class="select_wrap">
+					        	<label for="do">
+					              <input type="radio" id="do" name="pEqFlag" value="1" checked> 국내
+					            </label>
+					            <label for="fo">
+					              <input type="radio" id="fo" name="pEqFlag" value="2"> 국외
+					            </label>
+					        </div>
+						</div>
+					</div>
+		            <div class="li_btnAreaB gis_btnAreaB">
+				    	<a href="javascript:;" class="btn btn_red" onmousedown="fn_validCheck();" onclick="fn_SearchForEvent();">검색하기</a>
+				        <a href="javascript:;" class="btn btn_grayblue" onclick="fn_reset();">초기화</a>
+				    </div>
+		    	</div><!-- end section -->
+		    	</form>
+				<div class="section gis_quake_wrap">
+					<div class="article li_radio">
+						<ul class="gis_sel_quake">
+							<li>
+								<label for="sort1">
+								<input type="radio" id="sort1" name="earthquakeListOrder" value="newer" onclick="fn_earthquakeListOrder();" checked="checked">
+								 최근지진 우선
+								</label>
+							</li>
+							<li>
+								<label for="sort2">
+								<input type="radio" name="earthquakeListOrder" value="bigger" onclick="fn_earthquakeListOrder();">
+								큰지진 우선
+								</label>
+							</li>
+							<li>
+								<label for="sort3">
+								<input type="radio" name="earthquakeListOrder" value="older" onclick="fn_earthquakeListOrder();">
+								과거지진 우선
+								</label>
+							</li>
+							<li>
+								<label for="sort4">
+								<input type="radio" id="sort4" name="earthquakeListOrder" value="smaller" onclick="fn_earthquakeListOrder();">
+								작은지진 우선
+								</label>
+							</li>
+						</ul>
+					</div>
+					<div class="article">
+						<dl class="gis_quake_list" id="eqList">
+						</dl>
+						<div id="eqContents" class="eqContents">
+						</div>
+					</div>
+				</div><!-- section gis_quake_wrap -->
+	  		</div>
+	  		<div id="mapDiv" class="fl gis_wrap">
+	  			<!-- 지도 영역 -->  
+	  			<!-- <div id="mapDiv" width="100%" height="100%"></div> -->
+	  			
+	  			
+				
+				<!--<div class="ol-viewport"></div> -->
+				<div class="legend">
+					<img src="https://necis.kma.go.kr/necis-dbf/img/legend_sta_new.png" width="143px" height="184px" alt="국내관측소 범례" id="obImg">
+					<img src="https://necis.kma.go.kr/necis-dbf/img/legend_scail.png" width="77px" height="210px" alt="지진규모 범례" id="eqImg">
+				</div>
+			</div>
+			<div id="popup" class="ol-popup"><a href="#" id="popup-closer" class="ol-popup-closer"></a><div id="popup-content" class="ol_tooltip"></div></div>
+			<div class="fr gis_set">
+				<div class="section">
+					<div class="article">
+						<h2>지진정보</h2>
+						<div class="article_body">
+							<ul class="full_list">
+								<li>
+									<label for="krQuake">
+										<input type="checkbox" id="krQuake" name="koreaEarthquake" value="vectorEq" checked onclick="toggleLayer(this.value, checked)">지진
+									</label>
+									<span class="btn_gis_wrap">
+										<a href="javascript:;" class="btn_gis" onclick="fn_ReportXlsNew('eq');" title="Excel 다운로드">xls</a>
+										<a href="javascript:;" class="btn_gis" onclick="fn_ReportCsvNew('eq');" title="CSV 다운로드">csv</a>
+										<a href="javascript:;" class="btn_gis kml" onclick="fn_ReportKmlNew('eq');" title="KML 다운로드">kml</a>  
+									</span>     
+								</li>
+								<li>
+									<label for="krSta">
+										<input type="checkbox" id="krSta" name="koreaEarthquake" value="vectorOb" onclick="toggleLayer(this.value, checked)">국내 관측소
+									</label>
+									<span class="btn_gis_wrap">
+										<a href="javascript:;" class="btn_gis" onclick="fn_ReportXlsNew('st');" title="Excel 다운로드">xls</a>
+										<a href="javascript:;" class="btn_gis" onclick="fn_ReportCsvNew('st');" title="CSV 다운로드">csv</a>
+										<a href="javascript:;" class="btn_gis kml" onclick="fn_ReportKmlNew('st');" title="KML 다운로드">kml</a>
+									</span>
+								</li>
+							</ul>
+						</div>
+						<div class="article_body">
+							<ul class="full_list">
+								<li>
+									<label for="hazard50">
+									<input type="radio" id="hazard50" name="koreaEarthquakeHazardProbability" value="layerKoreaEarthquakeHazardProbabilityOverlay50" onclick="selectKoreaEarthquakeHazardProbabilityLayer(this.value)">50년 주기 지진위험지도             
+									</label>
+								</li>
+								<li>
+									<label for="hazard2400">
+									<input type="radio" id="hazard2400" name="koreaEarthquakeHazardProbability" value="layerKoreaEarthquakeHazardProbabilityOverlay2400" onclick="selectKoreaEarthquakeHazardProbabilityLayer(this.value)">2400년 주기 지진위험지도</label>
+								</li>
+								<li>
+									<label for="hazard0">
+									<input type="radio" id="hazard0" name="koreaEarthquakeHazardProbability" value="none" checked onclick="selectKoreaEarthquakeHazardProbabilityLayer(this.value)">없음
+									</label>
+								</li>
+							</ul>
+							<span class="info">국민안전처</span>
+						</div>
+						<div class="article_body paddingB0">
+							<ul class="full_list">
+								<li>
+									<label for="">
+									<input type="checkbox" name="worldEarthquakeLayer" value="layerUsgsHeatmap" checked="checked" onclick="toggleLayer(this.value, checked)">
+									            최근 30일 세계 지진
+									</label>
+								</li>
+								<li>
+									<label>반경 :
+									<input id="radius" type="range" min="1" max="50" step="1" value="8">  
+									</label>
+								</li>
+								<li>
+									<label>번짐 :
+									<input id="blur" type="range" min="1" max="50" step="1" value="20">
+									</label>
+								</li>
+							</ul>
+							<span class="info">Real-time Feeds courtesy of the U.S. Geological Survey</span>
+						</div>
+					</div>     
+				</div>
+				<div class="section">
+					<div class="article select_wrap">
+						<h2>지도옵션</h2>
+						<div class="article_body">
+							<label for="maptype1">
+								<input type="radio" id="maptype1" name="backgroundLayer" value="layerWorldContinentGray" checked onclick="selectBackgroundLayer(this.value)">
+							 	 대륙  
+							</label>
+							<label for="maptype2">
+								<input type="radio" id="maptype2" name="backgroundLayer" value="layerWorldSatelliteImagery" onclick="selectBackgroundLayer(this.value)">
+							  	위성영상
+							</label>
+							<label for="maptype0">
+								<input type="radio" id="maptype0" name="backgroundLayer" value="none" onclick="selectBackgroundLayer(this.value)">
+							   	 없음
+							</label>
+						</div>
+						<div class="article_body">
+							<label for="nationBound">
+								<input type="checkbox" id="nationBound" name="nationBoundLayer" value="layerWorldNationLineLabel" onclick="toggleLayer(this.value, checked)">
+							  	  국경
+							</label>
+						</div>
+						<div class="article_body">
+							<label for="boundType1">
+								<input type="radio" id="boundType1" name="boundLayer" value="layerSNKoreaSiDo" onclick="selectBoundLayer(this.value)">
+								  시도
+							</label>
+							<label for="boundType2">
+								<input type="radio" id="boundType2" name="boundLayer" value="layerSNKoreaSiGunGu" onclick="selectBoundLayer(this.value)">
+								  시군구
+							</label>
+							<label for="boundType3">
+								<input type="radio" id="boundType3" name="boundLayer" value="layerSNKoreaDong" onclick="selectBoundLayer(this.value)">
+								  읍면동
+							</label>
+							<label for="boundType4">
+								<input type="radio" id="boundType4" name="boundLayer" value="none" checked onclick="selectBoundLayer(this.value)">
+								    없음
+							</label>
+						</div>
+						<div class="article_body">
+							<ul class="full_list">
+								<li>
+									<label for="highway">
+									<input type="checkbox" id="highway" name="Layer" value="layerKoreaHighway" onclick="toggleLayer(this.value, checked)">
+									      고속도로
+									</label>
+								</li>
+								<li>
+									<label for="road">
+									<input type="checkbox" id="road" name="Layer" value="layerKoreaRoad" onclick="toggleLayer(this.value, checked)">
+									    일반도로
+									</label>
+								</li>
+								<li>
+									<label for="rail">
+									<input type="checkbox" id="rail" name="Layer" value="layerKoreaRailFacility" onclick="toggleLayer(this.value, checked)">
+									    철도/지하철
+									</label>
+								</li>
+								<li>
+									<label for="transHazard">
+									<input type="checkbox" id="transHazard" name="Layer" value="layerKoreaTransHazard" onclick="toggleLayer(this.value, checked)">
+									        터널/교량/고가/지하도
+									</label>
+								</li>
+							</ul>
+						</div>
+<!-- 						<div class="article_body"> -->
+<!-- 							<label for="river"> -->
+<!-- 								<input type="checkbox" id="river" name="Layer" value="layerKoreaRiver" onclick="toggleLayer(this.value, checked)"> -->
+<!-- 								  하천 -->
+<!-- 							</label> -->
+<!-- 							<label for="park"> -->
+<!-- 								<input type="checkbox" id="park" name="Layer" value="layerKoreaPark" onclick="toggleLayer(this.value, checked)"> -->
+<!-- 								    공원 -->
+<!-- 							</label> -->
+<!-- 						</div> -->
+						<div class="article_body">
+							<label for="shadeType1">
+								<input type="radio" id="shadeType1" name="Layer" value="layerKoreaDem" onclick="toggleLayer(this.value, checked)">
+								  고도
+							</label>
+							<label for="shadeType2">
+								<input type="radio" id="shadeType2" name="Layer" value="layerKoreaHillshade" onclick="toggleLayer(this.value, checked)">
+								  경사도
+							</label>
+							<label for="shadeType3">
+								<input type="radio" id="shadeType3" name="Layer" value="layerKoreaColorslope" onclick="toggleLayer(this.value, checked)">
+							           색상경사도
+							</label>
+							<label for="shadeType0">
+								<input type="radio" id="shadeType0" name="Layer" value="layerShadeNone" checked onclick="toggleLayer(this.value, checked)">
+								없음
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="section">
+					<div class="article">
+						<h2>그리기 기능</h2>
+						<div class="article_body paddingB0">
+							<select id="measureType" title="도형선택">
+								<option value="none">없음</option>
+								<option value="radius">원(반경)</option>
+								<option value="length">직선(거리)</option>            
+								<option value="area">다각형(면적)</option>
+								<option value="point">점</option>            
+							</select>
+							<input type="reset" class="btn btn_blueline" value="모두 지우기" onclick="resetMeasureInteraction()">
+							<label for="measureCheck">
+								<input type="checkbox" id="measureCheck" checked />측량값
+							</label>
+							<p class="info">지구반경 6,378,137km 기준</p>
+						</div>
+					</div>
+				</div>
+			</div>
+	  	</div>
+  		<form id="filedown" method="post" name="filedown" onsubmit="return false">
+		</form>
+		<iframe name="ifDown" style='display: none;'></iframe>
+	</body>
+	<script type="text/javascript">
+	    ///////////////////////////////////////////
+	    // 지도 객체 생성
+	    var map;
+	
+	    ///////////////////////////////////////////
+	    // 지도 서비스 환경변수 설정
+	
+	    // GeoServer WMS 주소
+// 	    var geoserverUrl = 'http://gis.necis.kma.go.kr:8080/gis/NECIS/wms';
+	    var geoserverUrl = 'http://172.20.136.102:8020/NECIS/wms';
+	    var context = '/necis-dbf';
+	    geoserverUrl = context + "/usernl/comm/gisMap.do";
+	    // USGS 지난 30일간 규모 2.5 이상 지진데이터 KML 파일 서비스 (15분 간격으로 갱신)
+	    // 출처 : http://earthquake.usgs.gov/earthquakes/feed/v1.0/kml.php
+	    var usgsUrl = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_month_age.kml';
+	    // 아이콘, 라이브러리 등 리소스 URL
+	    var baseUrl = '';
+	
+	    // WMS 레이어명을 이용하여 레이어 객체 생성하여 반환
+	    // 입력 : 레이어명(문자열)
+	    // 반환 : WMS 타일맵 객체
+	    function makeLayer(serverUrl, layerName, title){
+	        if (layerName == "") { alert("error : layerName parameter 없음"); }
+	        if (serverUrl == "") { alert("error : WMS url parameter 없음"); }
+	        return new ol.layer.Tile({
+	          source: new ol.source.TileWMS({
+	            url: serverUrl,
+	            params: {
+	              'LAYERS': layerName,
+	              'TILED' : true,
+	              format: 'image/png',
+	              STYLES: '',
+	            }
+	          }),
+	          visible: false,
+	          name: title
+	        });
+	    };
+	
+	    // 이름을 이용하여 레이어를 찾는다.
+	    // 입력 : 레이어명(문자열)
+	    // 반환 : 레이어 객체
+	    function findByName(name) {
+	        var layers = map.getLayers();
+	        var length = layers.getLength();
+	        for (var i = 0; i < length; i++) {
+	            if (name === layers.item(i).get('name')) {
+	                return layers.item(i);
+	            }
+	        }
+	        return null;
+	    }
+	
+	    // 레이어 선택 체크박스나 라디오 버튼에서 클릭할 경우 해당 이벤트를 처리한다.
+	    // 입력 : 레이어명
+	    // 배경지도 선택
+	    function selectBackgroundLayer(value){          
+	        if(value !== 'layerWorldContinentGray') findByName('layerWorldContinentGray').setVisible(false);
+	        if(value !== 'layerWorldSatelliteImagery') findByName('layerWorldSatelliteImagery').setVisible(false);
+	        if(value !== 'none') findByName(value).setVisible(true);
+	    }
+	    // 행정경계 선택
+	    function selectBoundLayer(value){
+	        if(value !== 'layerSNKoreaSiDo') findByName('layerSNKoreaSiDo').setVisible(false);
+	        if(value !== 'layerSNKoreaSiGunGu') findByName('layerSNKoreaSiGunGu').setVisible(false);
+	        if(value !== 'layerSNKoreaDong') findByName('layerSNKoreaDong').setVisible(false);          
+	        if(value !== 'none') findByName(value).setVisible(true);
+	    }
+	    // 지진위험지도 선택
+	    function selectKoreaEarthquakeHazardProbabilityLayer(value){
+	        if(value !== 'layerKoreaEarthquakeHazardProbabilityOverlay50') findByName('layerKoreaEarthquakeHazardProbabilityOverlay50').setVisible(false);
+	        if(value !== 'layerKoreaEarthquakeHazardProbabilityOverlay2400') findByName('layerKoreaEarthquakeHazardProbabilityOverlay2400').setVisible(false);
+	        if(value !== 'none') findByName(value).setVisible(true);
+	    }
+	    // 체크 레이어의 표출을 토글
+	    function toggleLayer(value, flag){
+	    	if(value == "layerKoreaDem"){
+	    		findByName("layerKoreaDem").setVisible(true);
+	    		findByName("layerKoreaHillshade").setVisible(false);
+	    		findByName("layerKoreaColorslope").setVisible(false);
+	    	}else if(value == "layerKoreaHillshade"){
+	    		findByName("layerKoreaDem").setVisible(false);
+	    		findByName("layerKoreaHillshade").setVisible(true);
+	    		findByName("layerKoreaColorslope").setVisible(false);
+	    	}else if(value == "layerKoreaColorslope"){
+	    		findByName("layerKoreaDem").setVisible(false);
+	    		findByName("layerKoreaHillshade").setVisible(false);
+	    		findByName("layerKoreaColorslope").setVisible(true);
+	    	}else if(value == "layerShadeNone"){
+	    		findByName("layerKoreaDem").setVisible(false);
+	    		findByName("layerKoreaHillshade").setVisible(false);
+	    		findByName("layerKoreaColorslope").setVisible(false);
+	    	}else{
+		        findByName(value).setVisible(flag);
+	    	}
+	        
+	        if(value == "vectorOb"){
+	        	if(flag){
+	        		$("#obImg").show();
+	        		//$("#eqImg").hide();
+	        	} else {
+	        		$("#obImg").hide();
+	        		//$("#eqImg").show();
+	        	}	
+	        } else if(value == "vectorEq"){
+	        	if(flag){
+	        		$("#eqImg").show();
+	        		//$("#obImg").hide();
+	        	} else {
+	        		$("#eqImg").hide();
+	        		//$("#obImg").show();
+	        	}	
+	        }
+	        
+	        
+	    }
+	
+	    ///////////////////////////////////////////
+	    // 사전 등록 위치로 지도 중심 이동
+	    function moveTo(lon, lat, zoom){
+	        var destination = [lon, lat];
+	        var duration = 2000;
+	        var start = +new Date();
+	        var pan = ol.animation.pan({
+	          duration: duration,
+	          source: (map.getView().getCenter()),
+	          start: start
+	        });
+	        var bounce = ol.animation.bounce({
+	          duration: duration,
+	          resolution: 3 * map.getView().getResolution(),
+	          start: start
+	        });
+	        map.beforeRender(pan, bounce);
+	        map.getView().setCenter(destination);
+	        map.getView().setZoom(zoom);
+	    }
+	
+	    // OpenLayers 지도 객체를 초기화한다.
+	    // 입력 : 지도가 표출될 div 식별자
+	    // 반환 : 성공 true, 실패 false
+	    function initMap(mapDiv){
+	        if (mapDiv == "") {
+	          alert("error : mapDiv parameter is not exist");
+	          return false;
+	        }
+	
+		    ///////////////////////////////////////////
+		    // OpenLayers 레이어 객체 정의
+		
+		    //////// 배경 레이어
+		      
+		    var layerWorldSatelliteImagery = makeLayer(geoserverUrl, "NECIS:WorldSatelliteImagery", "layerWorldSatelliteImagery");  // 전세계 위성영상          
+		    var layerWorldContinentGray = makeLayer(geoserverUrl, "NECIS:WorldContinentGray", "layerWorldContinentGray"); // 전세계 대륙          
+		
+		    //////// 국경/행정구역 레이어          
+		    var layerWorldNationLineLabel = makeLayer(geoserverUrl, "NECIS:WorldNationLineLabel", "layerWorldNationLineLabel"); // 전세계 국경 및 국가명          
+		    var layerSNKoreaSiDo = makeLayer(geoserverUrl, "NECIS:SNKoreaSiDo", "layerSNKoreaSiDo");  // 한반도 시도 (남북한)          
+		    var layerSNKoreaSiGunGu = makeLayer(geoserverUrl, "NECIS:SNKoreaSiGunGu", "layerSNKoreaSiGunGu"); // 한반도 시군구 (남북한)          
+		    var layerSNKoreaDong = makeLayer(geoserverUrl, "NECIS:SNKoreaDong", "layerSNKoreaDong");  // 한반도 동 (남한)
+		
+		    //////// 교통시설 레이어          
+		    var layerKoreaRoad = makeLayer(geoserverUrl, "NECIS:KoreaRoad", "layerKoreaRoad");  // 대한민국 일반도로          
+		    var layerKoreaHighway = makeLayer(geoserverUrl, "NECIS:KoreaHighway", "layerKoreaHighway"); // 대한민국 고속도로          
+		    var layerKoreaRailFacility = makeLayer(geoserverUrl, "NECIS:KoreaRailFacility", "layerKoreaRailFacility");  // 대한민국 철도/지하철          
+		    var layerKoreaTransHazard = makeLayer(geoserverUrl, "NECIS:KoreaTransHazard", "layerKoreaTransHazard"); // 대한민국 교통관련 재해 취약시설(터널, 교량, 고가)
+		
+		    //////// 지형지물 레이어          
+		    var layerKoreaRiver = makeLayer(geoserverUrl, "NECIS:KoreaRiver", "layerKoreaRiver"); // 대한민국 하천          
+		    var layerKoreaPark = makeLayer(geoserverUrl, "NECIS:KoreaPark", "layerKoreaPark");  // 대한민국 공원          
+		    var layerKoreaDem = makeLayer(geoserverUrl, "NECIS:KoreaDem", "layerKoreaDem"); // 한반도 수치표고모델          
+		    var layerKoreaHillshade = makeLayer(geoserverUrl, "NECIS:KoreaHillshade", "layerKoreaHillshade"); // 한반도 음영경사도          
+		    var layerKoreaColorslope = makeLayer(geoserverUrl, "NECIS:KoreaColorslope", "layerKoreaColorslope");  // 한반도 색상경사도
+		
+		    //////// 지진관련 속성 레이어          
+		    var layerKoreaEarthquakeHazardProbabilityOverlay50 = makeLayer(geoserverUrl, "NECIS:KoreaEarthquakeHazardProbabilityOverlay50", "layerKoreaEarthquakeHazardProbabilityOverlay50");  // 50년 주기 한반도 지진 발생 위험 확륙          
+		    var layerKoreaEarthquakeHazardProbabilityOverlay2400 = makeLayer(geoserverUrl, "NECIS:KoreaEarthquakeHazardProbabilityOverlay2400", "layerKoreaEarthquakeHazardProbabilityOverlay2400");  // 2400년 주기 한반도 지진 발생 위험 확륙
+		
+		    // 오버레이될 순서에 따라서 레이어 목록 정리 : 뒤로 갈 수록 위로 간다.
+		    var layers = [
+		      layerWorldContinentGray, layerWorldSatelliteImagery,
+		      layerKoreaDem, layerKoreaHillshade, layerKoreaColorslope,
+		      layerKoreaRiver, layerKoreaPark,
+		      layerWorldNationLineLabel, layerSNKoreaSiDo, layerSNKoreaSiGunGu, layerSNKoreaDong,
+		      layerKoreaRoad, layerKoreaHighway, layerKoreaRailFacility, layerKoreaTransHazard,
+		      layerKoreaEarthquakeHazardProbabilityOverlay50, layerKoreaEarthquakeHazardProbabilityOverlay2400
+		    ];
+		
+		    // 전체보기 컨트롤 전용 전세계 위성영상
+		    var layerOverviewImagery = makeLayer(geoserverUrl, "NECIS:NasaWorld", "layerOverviewImagery");
+		    layerOverviewImagery.setVisible(true);
+		    var overviewLayers = [
+		      layerOverviewImagery
+		    ];
+	        
+		    // 지도화면의 컨트롤 설정
+		    var controls = [
+		      new ol.control.Attribution(),
+		      // 마우스 좌표를 경위도로 지도에 표출
+		      new ol.control.MousePosition({
+		        coordinateFormat: function(coordinate) {
+		          return ol.coordinate.format(coordinate, '{y}, {x}', 5);
+		        }
+		      }),
+		      new ol.control.ScaleLine({
+		        units: 'metric',
+		        minWidth: 100
+		      }),
+		      new ol.control.Zoom(),
+		      new ol.control.ZoomSlider(),
+		      new ol.control.OverviewMap({
+		        collapsed: false,
+		        layers: overviewLayers,
+		        view: new ol.View({
+	 		        projection: 'EPSG:4326', // here
+// 		          projection: 'EPSG:900913' // here
+					maxZoom: 15, // here
+					minZoom: 1 // here
+		        })
+		      })
+		    ];
+		
+		    // 지도 객체 생성 및 좌표계 설정, 최초화면 중심점/확대율 설정
+		    map = new ol.Map({
+		      target: mapDiv,
+		      controls: controls,
+		      layers: layers,
+		      view: new ol.View({
+		        projection: 'EPSG:4326', // here
+// 		        projection: 'EPSG:900913', // here
+		        center: [127.00, 38.00], // here
+// 		        center: [14137575.330745745, 4579425.812870097], // here
+		        zoom: 7,
+				maxZoom: 15, // here
+				minZoom: 1 // here
+		      })
+		    });
+		
+		    // 최초 표출시킬 레이어들을 활성화
+		    layerWorldContinentGray.setVisible(true);
+		
+		    return true;
+	    };  // initMap 정의 끝
+	
+	    ///////////////////////////////////////////
+	    // 지도 초기화
+	    initMap("mapDiv");
+	
+	    ////////////////////////////////////////////
+	    // 지도 상에 USGS 지진정보 표출 (히트맵 형태) - OpenLayer 히트맵 예제 응용
+	    // http://openlayers.org/en/v3.13.1/examples/heatmap-earthquakes.html?q=heatmap
+	
+	    var blur = document.getElementById('blur');
+	    var radius = document.getElementById('radius');
+	
+	    // USGS에서 서비스하는 최근 전세계 지진 발생 KML 파일을 Heatmap API를 이용하여 레이어로 생성
+	    var layerUsgsHeatmap = new ol.layer.Heatmap({
+	        source: new ol.source.Vector({
+	          url: usgsUrl,
+	          format: new ol.format.KML({
+	            extractStyles: false
+	          })
+	        }),
+	        blur: parseInt(blur.value, 10),
+	        radius: parseInt(radius.value, 10),
+	        name: 'layerUsgsHeatmap'
+	    });
+	
+	    // HeatMap의 가중치를 지도의 규모로 설정
+	    layerUsgsHeatmap.getSource().on('addfeature', function(event) {
+	        var name = event.feature.get('name');
+	        var magnitude = parseFloat(name.substr(2));
+	        event.feature.set('weight', magnitude);
+	    });
+	
+	    // 지도에 레이어를 등록
+	    map.addLayer(layerUsgsHeatmap);
+	
+	    // 웹 컨트롤에서 설정한 반경과 번짐 값을 이용하여 그림 변경
+	    blur.addEventListener('input', function() {
+	        layerUsgsHeatmap.setBlur(parseInt(blur.value, 10));
+	    });
+	
+	    radius.addEventListener('input', function() {
+	        layerUsgsHeatmap.setRadius(parseInt(radius.value, 10));
+	    });
+	
+	
+	    ////////////////////////////////////////////
+	    // 지도 상에 마우스로 입력받아 거리와 면적을 계산하고 도형을 그린다. - OpenLayer 예제를 발전시킴
+	    // http://openlayers.org/en/v3.13.1/examples/measure.html
+	
+	    var wgs84Sphere = new ol.Sphere(6378137);
+	    var measureSource = new ol.source.Vector();
+	    var measureSketchDraw;
+	    var helpTooltip;
+	    var helpTooltipElement;
+	    var measureTooltip;
+	    var measureTooltipElement;
+	
+	    var layerMeasure = new ol.layer.Vector({
+	      source: measureSource,
+	      // 고정된 측량 결과물 도형의 색상
+	      style: new ol.style.Style({
+	        fill: new ol.style.Fill({
+	          color: 'rgba(255, 200, 200, 0.2)'
+	        }),
+	        stroke: new ol.style.Stroke({
+	          color: '#992222',
+	          width: 2
+	        }),
+	        image: new ol.style.Circle({
+	          radius: 7,
+	          fill: new ol.style.Fill({
+	            color: '#ff2222'
+	          })
+	        })
+	      })
+	    });
+	
+	    map.addLayer(layerMeasure);
+	
+	    // 마우스 포인터 이동 이벤트 처리
+	    var pointerMoveHandler = function(evt) {
+	        if (evt.dragging) {
+	          return;
+	        }
+	        
+	        if (measureDraw === null || measureTypeSelect.value === "none") {
+	          $(helpTooltipElement).addClass('hidden');
+	          if(helpTooltip) helpTooltip.setPosition(undefined);
+	          map.removeInteraction(measureDraw);
+	          return;
+	        }
+	        // 포인트 좌표를 출력
+	        var helpMsg = evt.coordinate[1].toFixed(4) + ", " + evt.coordinate[0].toFixed(4);
+	        helpTooltipElement.innerHTML = helpMsg;
+	        helpTooltip.setPosition(evt.coordinate);
+	        
+	        $(helpTooltipElement).removeClass('hidden');
+	    };
+	
+	    map.on('pointermove', pointerMoveHandler);
+	
+	    $(map.getViewport()).on('mouseout', function() {
+	        $(helpTooltipElement).addClass('hidden');
+	    });
+	
+	    var measureTypeSelect = document.getElementById('measureType');
+	    var measureCheck = document.getElementById('measureCheck');
+	    
+	    var measureDraw = null;
+	
+	    // 숫자 천 단위 콤마 추가
+	    function comma(str) {
+	        str = String(str);
+	        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+	    }
+	
+	    // 거리 계산 및 출력 문자열 생성
+	    var formatLength = function(line) {
+	        var length;
+	        var coordinates = line.getCoordinates();
+	        length = 0;
+	        var sourceProj = map.getView().getProjection();
+	        for (var i = 0, ii = coordinates.length - 1; i < ii; ++i) {
+	          var c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:4326'); // here
+	          var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:4326'); // here
+// 	          var c1 = ol.proj.transform(coordinates[i], sourceProj, 'EPSG:900913'); // here
+// 	          var c2 = ol.proj.transform(coordinates[i + 1], sourceProj, 'EPSG:900913'); // here
+	          length += wgs84Sphere.haversineDistance(c1, c2);
+	          // Returns the distance from c1 to c2 using the haversine formula.
+	        }
+	        
+	        var output;
+	        if (length > 100) {
+	          output = comma(Math.round(length / 1000 * 100) / 100) + ' ' + 'km';
+	        } else {
+	          output = comma(Math.round(length * 100) / 100) + ' ' + 'm';
+	        }
+	        return output;
+	    };
+	
+	    // 거리 계산 및 출력 문자열 생성
+	    var formatRadius = function(radius) {
+	        var sourceProj = map.getView().getProjection();
+	        var c1 = ol.proj.transform(radius.getCenter(), sourceProj, 'EPSG:4326'); // here
+	        var c2 = ol.proj.transform(radius.getLastCoordinate(), sourceProj, 'EPSG:4326'); // here
+// 	        var c1 = ol.proj.transform(radius.getCenter(), sourceProj, 'EPSG:900913'); // here
+// 	        var c2 = ol.proj.transform(radius.getLastCoordinate(), sourceProj, 'EPSG:900913'); // here
+	        var length = wgs84Sphere.haversineDistance(c1, c2);
+	        // Returns the distance from c1 to c2 using the haversine formula.
+	        
+	        var output;
+	        if (length > 100) {
+	          output = comma(Math.round(length / 1000 * 100) / 100) + ' ' + 'km';
+	        } else {
+	          output = comma(Math.round(length * 100) / 100) + ' ' + 'm';
+	        }
+	        return output;
+	    };
+	
+	    // 면적 계산 및 출력 문자열 생성
+	    var formatArea = function(polygon) {
+	        var area;
+	        var sourceProj = map.getView().getProjection();
+	        var geom = (polygon.clone().transform(sourceProj, 'EPSG:4326')); // here
+// 	        var geom = (polygon.clone().transform(sourceProj, 'EPSG:900913')); // here
+	        var coordinates = geom.getLinearRing(0).getCoordinates();
+	        area = Math.abs(wgs84Sphere.geodesicArea(coordinates)); // 계산방식 : http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409
+	      
+	        var output;
+	        if (area > 10000) {
+	          output = comma(Math.round(area / 1000000 * 100) / 100) + ' ' + 'km<sup>2</sup>';
+	        } else {
+	          output = comma(Math.round(area * 100) / 100) + ' ' + 'm<sup>2</sup>';
+	        }
+	        return output;
+	    };
+	
+	    // 좌표 문자열 생성
+	    var formatPoint = function(point) {
+	        var sourceProj = map.getView().getProjection();
+	        var geom = (point.clone().transform(sourceProj, 'EPSG:4326')); // here
+// 	        var geom = (point.clone().transform(sourceProj, 'EPSG:900913')); // here
+	        var coordinate = geom.getLastCoordinate();
+	        var output = coordinate[1] + "," + coordinate[0];
+	        return output;
+	    };
+	
+	    // 측량 간 마우스 이동을 처리
+	    function addMeasureInteraction() {
+	        var type;
+	        if(measureTypeSelect.value == 'area'){
+	          type = 'Polygon';
+	        }else if(measureTypeSelect.value == 'radius'){
+	          type = 'Circle';
+	        }else if(measureTypeSelect.value == 'length'){
+	          type = 'LineString';
+	        }else if(measureTypeSelect.value == 'point'){
+	          type = 'Point';
+	        }else{
+	          type = null;
+	        }
+	      
+	        if(type == null){
+	          if(measureDraw) map.removeInteraction(measureDraw);
+	        }else{            
+	          measureDraw = new ol.interaction.Draw({
+	            source: measureSource,
+	            type: (type),
+	            // 측량하는 중간의 도형 색상
+	            style: new ol.style.Style({
+	              fill: new ol.style.Fill({
+	                color: 'rgba(255, 255, 255, 0.4)'
+	              }),
+	              stroke: new ol.style.Stroke({
+	                color: 'rgba(100, 100, 255, 0.9)',
+	                lineDash: [5, 5],
+	                width: 2
+	              }),
+	              image: new ol.style.Circle({
+	                radius: 5,
+	                stroke: new ol.style.Stroke({
+	                  color: 'rgba(100, 100, 255, 0.9)'
+	                }),
+	                fill: new ol.style.Fill({
+	                  color: 'rgba(255, 255, 255, 0.4)'
+	                })
+	              })
+	            })
+	          });            
+	        }
+	      
+	        if(measureDraw){
+	          map.addInteraction(measureDraw);
+	          createMeasureTooltip();
+	          createHelpTooltip();
+	      
+	          var listener;
+	          measureDraw.on('drawstart',
+	            function(evt) {
+	              measureSketchDraw = evt.feature;
+	              var tooltipCoord = evt.coordinate;
+	      
+	              listener = measureSketchDraw.getGeometry().on('change', function(evt) {
+	                var geom = evt.target;
+	                var output;
+	                if (geom instanceof ol.geom.Polygon) {
+	                  output = formatArea((geom));
+	                  tooltipCoord = geom.getInteriorPoint().getCoordinates();
+	                } else if (geom instanceof ol.geom.LineString) {
+	                  output = formatLength((geom));
+	                  tooltipCoord = geom.getLastCoordinate();
+	                } else if (geom instanceof ol.geom.Circle) {
+	                  output = formatRadius((geom));
+	                  tooltipCoord = geom.getLastCoordinate();
+	                } else if (geom instanceof ol.geom.Point) {                    
+	                  output = formatPoint((geom));                    
+	                  tooltipCoord = geom.getLastCoordinate();
+	                }
+	                measureTooltipElement.innerHTML = output;
+	                measureTooltip.setPosition(tooltipCoord);
+	              });
+	            },
+	            this
+	          );
+	      
+	          measureDraw.on('drawend',
+	            function() {
+	              if(measureCheck.checked){
+	                measureTooltipElement.className = 'tooltip tooltip-static';
+	                measureTooltip.setOffset([0, -7]);
+	                measureSketchDraw = null;
+	                measureTooltipElement = null;
+	                createMeasureTooltip();
+	                ol.Observable.unByKey(listener);
+	              }else{
+	                if(measureTooltip) measureTooltip.setPosition(undefined);
+	              }
+	            }, 
+	            this
+	          );
+	        }
+	    }
+	
+	    // 층량을 중지
+	    function disableMeasure() {
+	        map.removeInteraction(measureDraw);
+	        measureTypeSelect.value = "none";
+	        if(helpTooltip) helpTooltip.setPosition(undefined);
+	    }
+	    // 측량 결과물들을 청소
+	    function clearMeasure() {
+	        measureSource.clear();
+	        var overlayList = map.getOverlays();
+	        for(var i = 0; i < overlayList.getLength(); i++){
+	          if(overlayList.item(i).getElement().className === 'tooltip tooltip-static' || 
+	             overlayList.item(i).getElement().className === 'tooltip hidden' || 
+	             overlayList.item(i).getElement().className === 'tooltip tooltip-measure'
+	            ){
+	            overlayList.removeAt(i);
+	            i = i - 1;
+	          }
+	        } 
+	    }
+	    // 지우기 버튼의 이벤트 처리
+	    function resetMeasureInteraction() {
+	        disableMeasure();
+	        clearMeasure();
+	    }
+	
+	    // 새로운 도움 툴팁을 생성
+	    function createHelpTooltip() {
+	        if (helpTooltipElement) {
+	          helpTooltipElement.parentNode.removeChild(helpTooltipElement);
+	        }
+	        helpTooltipElement = document.createElement('div');
+	        helpTooltipElement.className = 'tooltip hidden';
+	        helpTooltip = new ol.Overlay({
+	          element: helpTooltipElement,
+	          offset: [15, 0],
+	          positioning: 'center-left'
+	        });
+	        map.addOverlay(helpTooltip);
+	    }
+	
+	    // 새로운 측량 툴팁을 생성
+	    function createMeasureTooltip() {
+	        if (measureTooltipElement) {
+	          measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+	        }
+	        measureTooltipElement = document.createElement('div');
+	        measureTooltipElement.className = 'tooltip tooltip-measure';
+	        measureTooltip = new ol.Overlay({
+	          element: measureTooltipElement,
+	          offset: [0, -15],
+	          positioning: 'bottom-center'
+	        });
+	        map.addOverlay(measureTooltip);
+	    }
+	
+	    // 측량하기 리스트에서 선택 항목를 바꿀 경우
+	    measureTypeSelect.onchange = function() {
+	/*
+	      // 먼저 그리기 컨트롤을 중단
+	      drawTypeSelect.value = "none";
+	      map.removeInteraction(draw);
+	*/
+	        if(helpTooltip) helpTooltip.setPosition(undefined);
+	        map.removeInteraction(measureDraw);
+	      
+	        addMeasureInteraction();
+	    };
+	
+	    ////////////////////////////////////////////////////////////////////////////////////////
+	    // NECIS 공통 컨트롤
+	    // 기존 NECIS 컨트롤에 대해 절대 경로 baseUrl 전역변수를 이용하여 설정 가능하도록 변경
+	    ////////////////////////////////////////////////////////////////////////////////////////
+	    var eqList = "";  // 지진 목록
+	    var stList = "";  // 관측소 목록
+	
+	    var C_OB_NM = "관측소";
+	    var C_EQ_NM = "지진이벤트";
+	    var vectorEq; //지진
+	    var vectorOb, selectFeatureCOb, controlObBox; //관측소
+	    var controlSelectF; //featuer선택시 팝업 control (지진, 관측소)
+	    var vectorBase; //파일저장을 위한 임시
+	
+	    // 풍선창 팝업을 위한 객체 생성
+	    var container = document.getElementById('popup');
+	    var content = document.getElementById('popup-content');
+	    var closer = document.getElementById('popup-closer');
+	
+	    var popup = new ol.Overlay({
+	        element: container,
+	        autoPan: true,
+	        autoPanAnimation: {
+	          duration: 250
+	        }
+	    });
+	    map.addOverlay(popup);
+	
+	    //관측소 목록 가져오기
+	    function fn_SearchObserve() {
+	        var observeArr = ['KMA'];
+	        var strResponseURL = '/necis-dbf/usernl/comm/map_selectObsrvKindAjax.do' ;
+	        var param = 'networkCheckBox=' + observeArr;
+	       
+	        jQuery.ajax({
+	          url: strResponseURL, 
+	          type : "POST",
+	          data : param,
+	          dataType : "JSON",
+	          contentType: "application/x-www-form-urlencoded; charset=utf-8",
+	          error: function (request,status,error) {
+	        	  if(request.status == 403){
+	          		alert("세션이 만료됬습니다. 로그인 화면으로 이동합니다.");
+	          		location.href = request.responseText;
+	          	}
+	            },
+	          success: function (respData) {
+	            console.log("관측소 목록 fn_SearchObserve()");
+	            console.log(respData);
+	            m_addObMarker(respData, 'Y'); //관측소 종류로 보이기
+	            stList = respData;
+	          }
+	        });
+	    }
+	
+	    // 지진 목록 검색 (시작일자, 종료일자)
+	    function fn_SearchForEvent() {
+	        var form = document.mainForm;
+	        if(form.startDate.value == "") form.startDate.value = find_before_date(90);
+	        if(form.endDate.value == "") form.endDate.value = find_before_date(0);
+	      
+	        var startDate = form.startDate.value;           // 발생기간(시작)
+	        var endDate = form.endDate.value;               // 발생기간(종료)
+	        var startMagnitude = form.startMagnitude.value; // 규모범위(시작)
+	        var endMagnitude = form.endMagnitude.value;     // 규모범위(종료)
+	        var searchWord = escape(encodeURIComponent(form.searchWord.value)); // 검색어
+	        var pEqFlag = $("input[name=pEqFlag]:checked").val();    //1:국내 2:국외
+	        
+	        var strResponseURL = "https://necis.kma.go.kr/necis-dbf/usernl/comm/map_selectEqPgaAjax.do";
+	        var param = 'startDate=' + startDate + '&endDate=' + endDate;   //selectDate=' + selectDate + '&
+	        param += '&startMagnitude=' + startMagnitude + '&endMagnitude=' + endMagnitude + '&searchWord=' + searchWord;
+	        param += '&pEqFlag=' + pEqFlag;
+	      
+	        fn_ajax(strResponseURL, param, function(respData){
+	        	console.log("지진 목록 fn_SearchForEvent()");	
+	            m_addEqMarker(respData);
+	            eqList = respData;
+	            fn_earthquakeListOrder();
+	        });
+	        /* 
+	        $.ajax({
+	          url: strResponseURL, 
+	          type : "POST",
+	          data : param,
+	          dataType : "JSON",
+	          contentType: "application/x-www-form-urlencoded; charset=utf-8",
+	          error: function (msg) { displayError; },
+	          success: function (respData) {
+	            console.log("지진 목록 fn_SearchForEvent()");	
+	            m_addEqMarker(respData);
+	            eqList = respData;
+	            fn_earthquakeListOrder();
+              }
+	        }); */
+	    }
+	
+	    // 상세한 지진 이벤트 정보를 표출한다.
+	    function fnPrintEventDetail(feature){
+	       
+	        var velFileHtml = '';
+	        var accFileHtml = '';
+	       
+	        var velWaveHtml = '';
+	        var accWaveHtml = '';
+	       
+	        var tmpYear = feature.get('eqDt');
+	        var userId = "";
+	        
+	        if(feature.get('velFile') != null && feature.get('velFile') != '' && feature.get('velFileSize') != null && feature.get('velFileSize') > 0){
+	      	if(tmpYear.substring(0,4) >= 2000) {
+	              velWaveHtml = "<a href='#' class='btn btn_giswave' onclick=\"fnEventWavePop(\''/necis-dbf/usernl/earthquake/earthquake_event_wave_popup_form.do?eqId="  + feature.get('eqId') + "&eqDt=" + feature.get('eqDt') + "&lat=" + feature.get('lat') + "&lon=" + feature.get('lon')
+	                            + "&staCnt=" + feature.get('staCnt') + "&fileFullPath=" + feature.get('velFile') + "')\"><img src=\"/necis-dbf/assetsuser/images/stats_lines.png\" border=0> 파형보기</a>";
+	      	}
+	      	if(userId != 'guest') {
+	              velFileHtml = ', <a href="#" onclick="fn_file_download(\'' + feature.get('velFile') + '\', \'' + (feature.get('velFileSize') == null ? 0 : feature.get('velFileSize')) + '\');">'
+	                + "<img src=\"/necis-dbf/assetsuser/images/icon_download.png\" border=0> 다운로드</a><BR>";
+	      	}
+	        }
+	       
+	        if(feature.get('accFile') != null && feature.get('accFile') != '' && feature.get('accFileSize') != null && feature.get('accFileSize') > 0){
+	          if(tmpYear.substring(0,4) >= 2000) {
+	          accWaveHtml = "<a href='#' class='btn btn_giswave' onclick=\"fnEventWavePop(\''/necis-dbf/usernl/earthquake/earthquake_event_wave_popup_form.do?eqId="  + feature.get('eqId') + "&eqDt=" + feature.get('eqDt') + "&lat=" + feature.get('lat') + "&lon=" + feature.get('lon')
+	                        + "&staCnt=" + feature.get('staCnt') + "&fileFullPath=" + feature.get('accFile') + "')\"><img src=\"/necis-dbf/assetsuser/images/stats_lines.png\" border=0> 파형보기</a>";
+	          }
+	          if(userId != 'guest') {
+	              accFileHtml = ', <a href="#" onclick="fn_file_download(\'' + feature.get('accFile') + '\', \'' + (feature.get('accFileSize') == null ? 0 : feature.get('accFileSize')) + '\');">'
+	                + "<img src=\"/necis-dbf/assetsuser/images/icon_download.png\" border=0> 다운로드</a><BR>";
+	          }
+	        }
+	       
+	        var eqContentHtml = "<dl>";
+	         eqContentHtml += "<dt>규모</dt><dd>" + feature.get('magnitude') + "</dd>";
+	         eqContentHtml += "<dt>진원시</dt><dd>" + feature.get('eqDt') + "</dd>";
+	         eqContentHtml += "<dt>위치</dt><dd>" + Number(feature.get('lat')).toFixed(2) + ", " + Number(feature.get('lon')).toFixed(2) + "</dd>";
+	         eqContentHtml += "<dt>유감여부</dt><dd>" + feature.get('feelingYn') + "</dd>";
+	         eqContentHtml += "<dt>지역</dt><dd>" + feature.get('originArea') + "</dd>";
+	         //eqContentHtml += "<dt>속도</dt><dd>" + velWaveHtml + velFileHtml + "</dd>";
+	         //eqContentHtml += "<dt>가속도</dt><dd>" + accWaveHtml + accFileHtml + "</dd>";
+	         eqContentHtml += "</dl>";
+	         
+	        $("#eqContents").html(eqContentHtml);
+	    }
+	
+	    //관측소 파형 팝업창 보기
+	    function fnEventWavePop(url) {
+	        window.open(url, "winEarWave", 'width=1000,height=800,location=no,scrollbars=yes,resizable=yes,status=no,center=yes');
+	    }
+	
+	    var sizeCheckPopup;
+	    var evtFileFormat = "mseed";
+	    var fileDownloadParams;
+	    var fileDownloadCheckTimer;
+	    
+	    function fn_download_request(range, reqSize, requestType) {
+	        var scWidth = screen.availWidth/2-250;
+	        var scHeight = screen.availHeight/2-50;
+	        
+	        if (requestType.toLowerCase() == "directdownload") {
+	            var form = document.filedown;
+	            var downloadTokenValueId = new Date().getTime();
+	//             form.action = "/necis-dbf/user/fileDownload/direct/eventwave.do?reqSize="+reqSize+"&evtFileFormat="+evtFileFormat+ "&"+fileDownloadParams+"";
+	            form.action = "/necis-dbf/user/fileDownload/direct/eventwave.do?reqSize="+reqSize+"&evtFileFormat="+evtFileFormat+ "&"+fileDownloadParams + "&downloadTokenValueId=" + downloadTokenValueId;
+	            form.method = "post";
+	            form.target="ifDown";
+	            form.submit();
+	            
+	            fileDownloadCheckTimer = window.setInterval(function() {
+	                var cookieValue = getCookie("downloadToken");
+	                if (cookieValue == downloadTokenValueId) {
+	                    finishDownload();
+	                }
+	            }, 1000);
+	        } else {
+	            var form = document.filedown;
+	            sizeCheckPopup = window.open("", "earthquake_down_popup_form", 'top='+scHeight+',left='+scWidth+',width=578, height=256,location=no,scrollbars=no,resizable=no,status=no,center=yes');
+	            form.action = "/necis-dbf/user/fileDownload/download/"+range+"/eventwavefilesNew.do?reqSize="+reqSize+"&"+fileDownloadParams;
+	            form.method = "post";
+	            form.target = "earthquake_down_popup_form";
+	            form.submit();
+	            sizeCheckPopup.close();
+	        }
+	    }
+	    
+	    function fn_file_download(fileFullPath, reqSize) {
+    	//     var evtFileFormat = 'mseed';
+    	    var scWidth = screen.availWidth/2-250;
+    	    var scHeight = screen.availHeight/2-50;
+    	    var range = 'part';
+    	    fileDownloadParams = "fileList="+fileFullPath;
+    	    $("#totFileList").val(fileFullPath);
+    	    console.log("fn_file_download fileDownloadParams:" + fileDownloadParams);
+    	    var checkedFileCnt = 1;
+    	    sizeCheckPopup = window.open("", "earthquake_down_popup_form", 'top='+scHeight+',left='+scWidth+',width=578, height=256,location=no,scrollbars=no,resizable=no,status=no,center=yes');
+    	    var form = document.filedown;
+    	    form.action = "/necis-dbf/user/fileDownload/sizecheck/"+range+"/eventwavefilesNew.do?reqSize="+ reqSize + "&fileCnt="+checkedFileCnt + "&" + fileDownloadParams + "&evtFileFormat="+evtFileFormat;
+    	    form.method = "post";
+    	    form.target = "earthquake_down_popup_form";
+    	    form.submit();
+	    }
+	
+	    function getCookie(name) { 
+	        var Found = false;
+	        var start, end;
+	        var i = 0;
+	         
+	        while(i <= document.cookie.length) { 
+	            start = i; 
+	            end = start + name.length; 
+	         
+	            if(document.cookie.substring(start, end) == name) { 
+	                Found = true; 
+	                break; 
+	            } 
+	            i++; 
+	        } 
+	         
+	        if(Found == true) { 
+	            start = end + 1; 
+	            end = document.cookie.indexOf(";", start); 
+	            if(end < start){
+	                end = document.cookie.length;
+	            }
+	            return document.cookie.substring(start, end);
+	        } 
+	        return "";
+	    }
+	
+	    function deleteCookie(name) {
+	        var expireDate = new Date();
+	        expireDate.setDate(expireDate.getDate()-1);
+	        document.cookie = name + "=" + "; expires=" + expireDate.toGMTString() + "; path=/";
+	    }
+	
+	    function finishDownload() {
+	        console.log("finish download");
+	        window.clearInterval(fileDownloadCheckTimer);
+	        deleteCookie("downloadToken");
+	        sizeCheckPopup.close();
+	    }
+	    
+	    // 상세한 관측소 정보를 표출한다.
+	    function fnPrintStationDetail(feature){
+
+	        var eqContentHtml = "<div class='eqContents'><ul>";
+	         eqContentHtml += "<li>운영기관 코드 : " + feature.get('controlCd') + "<BR>";
+	         eqContentHtml += "<li>관측소 코드 : " + feature.get('observeCd') + "<BR>";
+	         eqContentHtml += "<li>관측소명 : " + feature.get('observeNm') + "<BR>";                 
+	         eqContentHtml += "<li>위치 : " + feature.get('lat') + ", " + feature.get('lon') + "<BR>";
+	         eqContentHtml += "<li>관측소 종류 : " + feature.get('staKind') + "<BR>";
+	         //eqContentHtml += "수신상태: " + feature.get('status') + "<BR>";
+	         if(feature.get('controlCd') == 'KMA'){
+	            var url = '/necis-dbf/user/ob/earthquakeObservatoryView.do?observeCd=' + feature.get('groupCd') + '.' + feature.get('observeCd');
+	            eqContentHtml += "<li>세부정보 : <a href='"+ url + "' target=_blank>관측소 세부정보</a><BR>";
+	         }
+	         eqContentHtml += "<li>실시간 파형 : <a href='#' onclick=\"fnEarWavePop('" + feature.get('controlCd') + "','" + feature.get('observeCd') + "');\"><img src=\"/necis-dbf/assetsuser/images/stats_lines.png\" border=0> 실시간 파형 보기</a><BR>";
+	         eqContentHtml += "</ul></div>";
+	         
+	         
+	         var eqContentHtml = "<dl>";
+	         eqContentHtml += "<dt>운영기관 코드</dt><dd>" + feature.get('controlCd') + "</dd>";
+	         eqContentHtml += "<dt>관측소 코드</dt><dd>" + feature.get('observeCd') + "</dd>";
+	         eqContentHtml += "<dt>관측소명</dt><dd>" + feature.get('observeNm') + "</dd>";
+	         eqContentHtml += "<dt>위치</dt><dd>" + feature.get('lat') + ", " + feature.get('lon') + "</dd>";
+	         eqContentHtml += "<dt>관측소 종류</dt><dd>" + feature.get('staKind') + "</dd>";
+	         if(feature.get('controlCd') == 'KMA'){
+	        	 var url = '/necis-dbf/user/ob/earthquakeObservatoryView.do?observeCd=' + feature.get('groupCd') + '.' + feature.get('observeCd');
+	        	 eqContentHtml += "<dt>세부정보</dt><dd><a href='"+ url + "' target='_blank' class='btn btn_giswave'>관측소 세부정보</a></dd>";
+	         }
+	         eqContentHtml += "<dt>실시간 파형</dt><dd><a href='#' class='btn btn_giswave' onclick=\"fnEarWavePop('" + feature.get('controlCd') + "','" + feature.get('observeCd') + "');\">실시간 파형 보기</a></dd>";
+	         eqContentHtml += "</dl>";
+	         
+	         
+	         
+	        $("#eqContents").html(eqContentHtml);
+	    }
+	
+	    //관측소 파형 팝업창 보기
+	    function fnEarWavePop(originalGroupCd, observeCd){
+	    //	alert("테이블 이관예정입니다.");
+	    //	return;
+	        var url = '/necis-dbf/user/ob/earthquake_wave_pop.do?observeCd=' + originalGroupCd + '.' + observeCd;
+	        window.open(url, "winEarWave", 'width=1000,height=800,location=no,scrollbars=yes,resizable=yes,status=no,center=yes');
+	    }
+	
+	
+	    //맵에 상세팝업 컨트롤 추가 control set 설정
+	    function fnAddControlSelectF(){
+	      
+	         // 아이콘을 클릭할 경우 정보창에 해당 정보를 표출하는 컨트롤
+	         map.on('singleclick', function(evt) {
+	           var feature = map.forEachFeatureAtPixel(evt.pixel,
+	               function(feature, layer) {
+	                 if(layer === vectorEq || layer === vectorOb) return feature;
+	                 return false;
+	               });
+	           if (feature) {
+	        	   console.log(feature.get('eqId'));
+	             // 한국 지진 아이콘의 경우 해당 지진 정보 표출
+	             if(feature.get('eqId')){
+	               fnPrintEventDetail(feature);
+	             }else if(feature.get('controlCd')){
+	               fnPrintStationDetail(feature);
+	             }
+	           }
+	         });
+	      
+	         // 마우스가 아이콘 위를 지날 때 풍선창으로 해당 정보 표출
+	         map.on('pointermove', function(evt) {
+	           var feature = map.forEachFeatureAtPixel(evt.pixel,
+	               function(feature, layer) {
+	                 if(layer === vectorEq || layer === vectorOb) return feature;
+	                 return false;
+	               });
+	           if (feature) {
+	             // 한국 지진 아이콘의 경우 해당 지진 정보 표출
+	             if(feature.get('eqId')) {
+	                content.innerHTML = "";
+	                //content.innerHTML += "• 아이디: " + feature.get('eqId') + "<BR>";
+	                content.innerHTML += "• 규모 : " + feature.get('magnitude') + "<BR>";
+	                content.innerHTML += "• 진원시 : " + feature.get('eqDt')  + "<BR>";
+	                content.innerHTML += "• 위치 : " + feature.get('lat') + ", " + feature.get('lon') + "<BR>";
+	                content.innerHTML += "• 지역 : " + feature.get('originArea') + "";
+	                popup.setPosition(evt.coordinate);
+	             } else if (feature.get('controlCd')) {
+	                content.innerHTML = "";                
+	                content.innerHTML += "• 운영기관 코드 : " + feature.get('controlCd') + "<BR>";
+	                content.innerHTML += "• 관측소 코드 : " + feature.get('observeCd') + "<BR>";
+	                content.innerHTML += "• 관측소명 : " + feature.get('observeNm') + "<BR>";                 
+	                content.innerHTML += "• 위치 : " + feature.get('lat') + ", " + feature.get('lon') + "<BR>";
+	                content.innerHTML += "• 관측소 종류 : " + feature.get('staKind') + "<BR>";
+	                //content.innerHTML += "•수신상태: " + feature.get('status') + "<BR>";
+	                popup.setPosition(evt.coordinate);
+	             } else {
+	                return false;
+	             }              
+	           } else if(popup.getPosition() != undefined) {
+	                popup.setPosition(undefined);
+	                closer.blur();
+	                return false;
+	           }            
+	         });
+	      
+	         /* closer.onclick = function() {
+	           popup.setPosition(undefined);
+	           closer.blur();
+	           return false;
+	         }; */
+	    }
+	
+	    function fn_ReportXlsNew(listName) {
+	        if (listName == "st") {
+	           // var observeArr = ['KMA'];
+	            var strResponseURL = '/necis-dbf/user/ob/observatoryListExcel.do?' ;
+	           // var param = 'networkCheckBox=' + observeArr;
+	            var form = document.filedown;
+	            
+	            form.action = strResponseURL + param;
+	            form.method = "post";
+	            form.target="ifDown";
+	            form.submit();
+	        } else if (listName == "eq") {
+	            var form = document.mainForm;
+	            if(form.startDate.value == "") form.startDate.value = find_before_date(90);
+	            if(form.endDate.value == "") form.endDate.value = find_before_date(0);
+	
+	            var startDate = form.startDate.value;           // 발생기간(시작)
+	            var endDate = form.endDate.value;               // 발생기간(종료)
+	            var startMagnitude = form.startMagnitude.value; // 규모범위(시작)
+	            var endMagnitude = form.endMagnitude.value;     // 규모범위(종료)
+	            var searchWord = escape(encodeURIComponent(form.searchWord.value)); // 검색어
+	            var pEqFlag = $("input[name=pEqFlag]:checked").val();    //1:국내 2:국외
+	            
+	            var strResponseURL = 'https://necis.kma.go.kr/necis-dbf/usernl/earthquake/earthquakeForEventListExcel.do?';
+	            var param = 'startDate=' + startDate + '&endDate=' + endDate;
+	            param += '&startMagnitude=' + startMagnitude + '&endMagnitude=' + endMagnitude + '&searchWord=' + searchWord;
+	            param += '&pEqFlag=' + pEqFlag;
+	            
+	            var form2 = document.filedown;
+	            
+	            form2.action = strResponseURL + param;
+	            form2.method = "post";
+	            form2.target="ifDown";
+	            form2.submit();
+	        }
+	    }
+	    
+	    function fn_ReportCsvNew(listName) {
+	        if (listName == "st") {
+	            var observeArr = ['KMA'];
+	            var strResponseURL = '/necis-dbf/user/ob/observatoryListCsv.do?' ;
+	            var param = 'networkCheckBox=' + observeArr;
+	            var form = document.filedown;
+	            
+	            form.action = strResponseURL + param;
+	            form.method = "post";
+	            form.target="ifDown";
+	            form.submit();
+	        } else if (listName == "eq") {
+	            var form = document.mainForm;
+	            if(form.startDate.value == "") form.startDate.value = find_before_date(90);
+	            if(form.endDate.value == "") form.endDate.value = find_before_date(0);
+	
+	            var startDate = form.startDate.value;           // 발생기간(시작)
+	            var endDate = form.endDate.value;               // 발생기간(종료)
+	            var startMagnitude = form.startMagnitude.value; // 규모범위(시작)
+	            var endMagnitude = form.endMagnitude.value;     // 규모범위(종료)
+	            var searchWord = escape(encodeURIComponent(form.searchWord.value)); // 검색어
+	            var pEqFlag = $("input[name=pEqFlag]:checked").val();    //1:국내 2:국외
+	            
+	            var strResponseURL = 'https://necis.kma.go.kr/necis-dbf/usernl/earthquake/earthquakeForEventListCsv.do?';
+	            var param = 'startDate=' + startDate + '&endDate=' + endDate;
+	            param += '&startMagnitude=' + startMagnitude + '&endMagnitude=' + endMagnitude + '&searchWord=' + searchWord;
+	            param += '&pEqFlag=' + pEqFlag;
+	            
+	            var form2 = document.filedown;
+	            
+	            form2.action = strResponseURL + param;
+	            form2.method = "post";
+	            form2.target="ifDown";
+	            form2.submit();
+	        }
+	    }
+	    
+	    function fn_ReportKmlNew(listName) {
+	        if (listName == "st") {
+	            var observeArr = ['KMA'];
+	            var strResponseURL = '/necis-dbf/user/ob/observatoryListKml.do?' ;
+	            var param = 'networkCheckBox=' + observeArr;
+	            var form = document.filedown;
+	            
+	            form.action = strResponseURL + param;
+	            form.method = "post";
+	            form.target="ifDown";
+	            form.submit();
+	        } else if (listName == "eq") {
+	            var form = document.mainForm;
+	            if(form.startDate.value == "") form.startDate.value = find_before_date(90);
+	            if(form.endDate.value == "") form.endDate.value = find_before_date(0);
+	
+	            var startDate = form.startDate.value;           // 발생기간(시작)
+	            var endDate = form.endDate.value;               // 발생기간(종료)
+	            var startMagnitude = form.startMagnitude.value; // 규모범위(시작)
+	            var endMagnitude = form.endMagnitude.value;     // 규모범위(종료)
+	            var searchWord = escape(encodeURIComponent(form.searchWord.value)); // 검색어
+	            var pEqFlag = $("input[name=pEqFlag]:checked").val();    //1:국내 2:국외
+	            
+	            var strResponseURL = 'https://necis.kma.go.kr/necis-dbf/usernl/earthquake/earthquakeForEventListKml.do?';
+	            var param = 'startDate=' + startDate + '&endDate=' + endDate;
+	            param += '&startMagnitude=' + startMagnitude + '&endMagnitude=' + endMagnitude + '&searchWord=' + searchWord;
+	            param += '&pEqFlag=' + pEqFlag;
+	            
+	            var form2 = document.filedown;
+	            
+	            form2.action = strResponseURL + param;
+	            form2.method = "post";
+	            form2.target="ifDown";
+	            form2.submit();
+	        }
+	    }
+	    
+	    // 관측소와 지진정보를 엑셀파일로 다운로드 제공
+	    var fn_ReportXls = (function() {
+	         var uri = 'data:application/vnd.ms-excel;base64,'
+	           , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+	           , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+	           , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) };
+	         return function(listName) {
+	           var name = "";
+	           var eqContentHtml = "";
+	       
+	           if(listName == 'eq' && eqList != ""){
+	             name = "지진 목록";
+	             eqContentHtml = "<tr><th>진원시</th><th>규모</th><th>위도</th><th>경도</th><th>유감여부</th><th>지역</th></tr>";
+	       
+	             for(var i = eqList.length - 1; i >=0 ; i--){
+	               var event = eqList[i];
+	               eqContentHtml += "<tr><td>" + event.eqDt + "</td>";
+	               eqContentHtml += "<td>" + event.magnitude + "</td>";
+	               eqContentHtml += "<td>" + event.lat + "</td><td>" + event.lon + "</td>";
+	               eqContentHtml += "<td>" + event.feelingYn + "</td>";
+	               eqContentHtml += "<td>" + event.originArea + "</td></tr>";
+	               }
+	           }else if(listName == 'st' && stList != "") {
+	             name = "관측소 목록";
+	             eqContentHtml = "<tr><th>운영기관 코드</th><th>관측소 코드</th><th>관측소명</th><th>위도</th><th>경도</th><th>관측소 종류</th></tr>";
+	       
+	             for(var i = stList.length - 1; i >=0 ; i--){
+	               var station = stList[i];
+	               eqContentHtml += "<tr><td>" + station.controlCd + "</td>";
+	               eqContentHtml += "<td>" + station.observeCd + "</td>";
+	               eqContentHtml += "<td>" + station.observeNm + "</td>";                 
+	               eqContentHtml += "<td>" + station.latitude + "</td><td>" + station.longitude + "</td>";
+	               eqContentHtml += "<td>" + station.staKind + "</td></tr>";
+	             }              
+	           }else{
+	             alert("다운로드할 정보가 없습니다.");
+	             return null;
+	           }
+	           var ctx = {worksheet: name || 'Worksheet', table: eqContentHtml}
+	           window.location.href = uri + base64(format(template, ctx));
+	         }
+	    })()
+	
+	    // 관측소와 지진정보를 CSV파일로 다운로드 제공
+	    var fn_ReportCsv = (function() {          
+	        return function(listName) {
+	          var name = "";
+	          var uri = 'data:text/csv;charset=utf-8,';
+	          var eqContentHtml = "";
+	       
+	          if(listName == 'eq' && eqList != ""){
+	            name = "earthquake.csv";              
+	            eqContentHtml = "진원시,규모,위도,경도,유감여부,지역\n";
+	            for(var i = eqList.length - 1; i >=0 ; i--){
+	              var event = eqList[i];
+	              eqContentHtml += event.eqDt + ",";
+	              eqContentHtml += event.magnitude + ",";
+	              eqContentHtml += event.lat + "," + event.lon + ",";
+	              eqContentHtml += event.feelingYn + ",";
+	              eqContentHtml += event.originArea + ",\n";
+	            }              
+	          }else if(listName == 'st' && stList != "") {
+	            name = "station.csv";
+	            eqContentHtml = "운영기관 코드,관측소 코드,관측소명,위도,경도,관측소 종류\n";
+	            for(var i = stList.length - 1; i >=0 ; i--){
+	              var station = stList[i];
+	              eqContentHtml += station.controlCd + ",";
+	              eqContentHtml += station.observeCd + ",";
+	              eqContentHtml += station.observeNm + ",";                 
+	              eqContentHtml += station.latitude + "," + station.longitude + ",";
+	              eqContentHtml += station.staKind + ",\n";
+	              }              
+	          }else{
+	            alert("다운로드할 정보가 없습니다.");
+	            return null;
+	          }
+	          var pom = document.createElement('a');
+	          pom.href = encodeURI(uri + eqContentHtml);
+	          pom.setAttribute('download', name);
+	          pom.click();
+	        }
+	    })()
+	
+	    /////////////////////////////////////////////////////////////////////
+	    // KML 다운로드를 위한 문자열 처리 코드
+	    // 출처 : http://openlayers.org/en/v3.4.0/resources/example-behaviour.js
+	
+	    /* Base64 string to array encoding */
+	    function uint6ToB64 (nUint6) {
+	        return nUint6 < 26 ?
+	            nUint6 + 65
+	          : nUint6 < 52 ?
+	            nUint6 + 71
+	          : nUint6 < 62 ?
+	            nUint6 - 4
+	          : nUint6 === 62 ?
+	            43
+	          : nUint6 === 63 ?
+	            47
+	          :
+	            65;
+	    }
+	
+	    function base64EncArr (aBytes) {
+	        var nMod3 = 2, sB64Enc = "";
+	        for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+	          nMod3 = nIdx % 3;
+	          if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+	          nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+	          if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+	            sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+	            nUint24 = 0;
+	          }
+	        }
+	        return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
+	    }
+	
+	    function strToUTF8Arr (sDOMStr) {
+	        var aBytes, nChr, nStrLen = sDOMStr.length, nArrLen = 0;
+	        /* mapping... */
+	        for (var nMapIdx = 0; nMapIdx < nStrLen; nMapIdx++) {
+	          nChr = sDOMStr.charCodeAt(nMapIdx);
+	          nArrLen += nChr < 0x80 ? 1 : nChr < 0x800 ? 2 : nChr < 0x10000 ? 3 : nChr < 0x200000 ? 4 : nChr < 0x4000000 ? 5 : 6;
+	        }
+	        aBytes = new Uint8Array(nArrLen);
+	      
+	        /* transcription... */
+	        for (var nIdx = 0, nChrIdx = 0; nIdx < nArrLen; nChrIdx++) {
+	          nChr = sDOMStr.charCodeAt(nChrIdx);
+	          if (nChr < 128) {
+	            /* one byte */
+	            aBytes[nIdx++] = nChr;
+	          } else if (nChr < 0x800) {
+	            /* two bytes */
+	            aBytes[nIdx++] = 192 + (nChr >>> 6);
+	            aBytes[nIdx++] = 128 + (nChr & 63);
+	          } else if (nChr < 0x10000) {
+	            /* three bytes */
+	            aBytes[nIdx++] = 224 + (nChr >>> 12);
+	            aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+	            aBytes[nIdx++] = 128 + (nChr & 63);
+	          } else if (nChr < 0x200000) {
+	            /* four bytes */
+	            aBytes[nIdx++] = 240 + (nChr >>> 18);
+	            aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+	            aBytes[nIdx++] = 128 + (nChr & 63);
+	          } else if (nChr < 0x4000000) {
+	            /* five bytes */
+	            aBytes[nIdx++] = 248 + (nChr >>> 24);
+	            aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+	            aBytes[nIdx++] = 128 + (nChr & 63);
+	          } else /* if (nChr <= 0x7fffffff) */ {
+	            /* six bytes */
+	            aBytes[nIdx++] = 252 + /* (nChr >>> 32) is not possible in ECMAScript! So...: */ (nChr / 1073741824);
+	            aBytes[nIdx++] = 128 + (nChr >>> 24 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+	            aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+	            aBytes[nIdx++] = 128 + (nChr & 63);
+	          }
+	        }
+	        return aBytes;
+	    }
+	    /////////////////////////////////////////////////////////////////////
+	
+	    // 관측소와 지진정보를 KML파일로 다운로드 제공
+	    var fn_ReportKml = (function() {          
+	        return function(listName) {
+	          var name = "";
+	          var uri = 'data:application/vnd.google-earth.kml+xml;base64,';
+	          var vectorSource;
+	       
+	          if(listName == 'eq' && eqList != ""){
+	            vectorSource = vectorEq.getSource();
+	            name = "earthquake.kml";
+	          }else if(listName == 'st' && stList != "") {
+	            vectorSource = vectorOb.getSource();
+	            name = "station.kml";
+	          }else{
+	            alert("다운로드할 정보가 없습니다.");
+	            return null;
+	          }
+	          
+	          var features = [];
+	          vectorSource.forEachFeature(function(feature) {
+	            var clone = feature.clone();
+	            clone.setId(feature.getId());
+	            features.push(clone);
+	          });
+	          var string = new ol.format.KML().writeFeatures(features);
+	          var base64 = base64EncArr(strToUTF8Arr(string));
+	          var pom = document.createElement('a');
+	          pom.href = encodeURI('data:application/vnd.google-earth.kml+xml;base64,' + base64);
+	          pom.setAttribute('download', name);
+	          pom.click();            
+	        }
+	    })()
+	    
+	    //지진 vector(vectorEq)추가, 클릭 이벤트 추가
+	    // - pPrint : Y(지도저장에 사용) . 주의사항 : 지진그리는 속도 느려짐  (비권장)
+	    function m_addMapEqEvent(pPrint) {
+	        //1. 레이어추가
+	        var sRender = { name: 'vectorEq' };
+	        if (pPrint == 'Y')  sRender = { renderers: ['Canvas', 'SVG', 'VML'], name: 'vectorEq' };  //export시 보이기위함 but 그리는 속도 많이 떨어짐
+	        vectorEq = new ol.layer.Vector(sRender);
+	        map.addLayer(vectorEq);
+	        //2. 맵에 상세팝업 컨트롤 추가
+	        fnAddControlSelectF();
+	    }
+	
+	    //관측소 vector 추가, 클릭이벤트 추가
+	    // - pPrint : Y(지도저장에 사용) . 주의사항 : 지진그리는 속도 느려짐  (비권장)
+	    function m_addMapOb(pPrint) {
+	        //1. 레이어추가 - 
+	        var sRender = { name: 'vectorOb', visible: false};
+	        if (pPrint == 'Y')  sRender = { renderers: ['Canvas', 'SVG', 'VML'], name: 'vectorOb', visible: false };  //export시 보이기위함 but 그리는 속도 많이 떨어짐
+	        vectorOb = new ol.layer.Vector(sRender);  //관측소                                           
+	        map.addLayer(vectorOb);
+	        //2. 맵에 상세팝업 컨트롤 추가
+	//        fnAddControlSelectF();                    
+	    }
+	
+	    //관측소 vector 추가, 클릭이벤트 추가. mouse 다중 선택
+	    function m_addMapOb2() {
+	        //1. 레이어추가
+	        vectorOb = new ol.layer.Vector();
+	        map.addLayer(vectorOb);
+	        
+	        //2. 관측소 event (연속파형에서 사용)
+	        var msg="";
+	        var layerListeners = {
+	          "featureover": function(e) {
+	            msg += " ["+e.feature.layer.name+"] "+ e.feature.attributes.observeCd+ " "+ e.feature.attributes.observeNm;
+	            fnLog(msg);
+	          },
+	          "featureout": function(e) {
+	            msg = "";
+	            fnLog(msg);
+	          }
+	        };
+	        vectorOb.events.on(layerListeners);
+	        
+	        //2. 맵에 상세팝업 컨트롤 추가
+	        selectFeatureCOb = new ol.Control.SelectFeature( vectorOb, 
+	          {toggle:true, multiple:true, clickout:false, 
+	          onSelect: m_selectIcon, onUnselect: m_unSelectIcon}); //
+	        map.addControl(selectFeatureCOb );
+	        selectFeatureCOb.activate(); //default
+	       
+	        //drag로 선택 control
+	        controlObBox = new ol.Control.SelectFeature( vectorOb, 
+	          {toggle: true, multiple:true,  clickout:false, 
+	          toggleKey: "ctrlKey", // ctrl key removes from selection
+	          multipleKey: "shiftKey", // shift key adds to selection
+	          box: true,
+	          onSelect: m_selectIcon, onUnselect: m_unSelectIcon }); //
+	        map.addControl(controlObBox );
+	    }
+	
+	    //////////////////////////////////////////
+	    // 지진목록을 클릭하면 상세정보를 보여주고 해당 이벤트의 위치로 지도의 중심을 움직인다.
+	    function m_findEventFeature(eqId){
+	        features = vectorEq.getSource().getFeatures();
+	        for(var f=0; f < features.length; f++) {
+	          if(features[f].get('eqId')){
+	            if(features[f].get('eqId') == eqId) {
+	              moveTo(features[f].get('lon'), features[f].get('lat'), 10); // here
+// 				  var parsed = fn_wgs84ToEpsg900913(features[f].get('lon'), features[f].get('lat')); // here
+// 	              moveTo(parsed[1], parsed[0], 10); // here
+	              return features[f];
+	            }
+	          }
+	        }          
+	    }
+	
+	    //////////////////////////////////////////
+	    // 지진목록 생성
+	    function m_addEqList(list){
+	        var eqListHtml = "";
+	        var color = "";
+	        for(var i = list.length - 1; i >=0 ; i--){
+	           var event = list[i];
+	           if(event.magnitude < 1.0){ color = "sca1"; }
+	           else if(event.magnitude < 2.0){ color = "sca2"; }
+	           else if(event.magnitude < 3.0){ color = "sca3"; }
+	           else if(event.magnitude < 4.0){ color = "sca4"; }
+	           else if(event.magnitude < 5.0){ color = "sca5"; }
+	           else if(event.magnitude < 6.0){ color = "sca6"; }
+	           else if(event.magnitude < 7.0){ color = "sca7"; }
+	           else { color = "sca1"; }
+	           
+	           eqListHtml+= "<div onclick='fnPrintEventDetail(m_findEventFeature(" + event.eqId + "));'>";
+	           eqListHtml+= "<dt class=" + color + ">" + event.magnitude + "</dt>";
+	           eqListHtml+= "<dd>";
+	           eqListHtml+= "	<ul>";
+	           eqListHtml+= "		<li>" + event.eqDt + "</li>";
+	           eqListHtml+= "		<li>" + Number(event.lat).toFixed(2) + ", " + Number(event.lon).toFixed(2) + "</li>";
+	           eqListHtml+= "		<li>" + event.originArea + "</li>";
+	           eqListHtml+= "	</ul>";
+	           eqListHtml+= "</dd>";
+	           eqListHtml+= "</div>";
+	        }
+	        $("#eqList").html(eqListHtml);
+	    }
+	
+	    //----------------------------------------------마커 그리기 
+	    // 지진 마커 그리기 
+	    // -list(jsonType)
+	    // -popType : 팝업형식. NO_POPUP(팝업없음)/NO_MOVE(상세이동버튼없음)
+	    function m_addEqMarker(list, popType){
+	        //진행중
+	        var scWidth = screen.availWidth/2-250;
+	        var scHeight = screen.availHeight/2-50;
+	        //process open
+	        var vReturn = window.open(
+	            "/necis-dbf/cmmnl/progressMgrPopup.do?closeYnCheck=N" , "egovProgress"
+	            ,'top='+scHeight+',left='+scWidth+',width=450, height=100, location=no,scrollbars=no,resizable=yes,status=no,center=yes');
+	        
+	          //지도 표시
+	          setTimeout( function() {
+	            //초기화
+	            m_clearEq();
+	       
+	            var event, iMagnitude, imgArr, lonLat, feature;
+	            var sourceEq = new ol.source.Vector({});
+	       
+	            for(var i=0; i< list.length; i++){
+	       
+	              //if (i == 0) {alert(i+":"+list[i].eqId+" "+list[i].magnitude+" "+list[i].lat+" "+list[i].lon+" "+list[i].eqDt);}  //log용
+	              //console.log("draw i:"+i);
+	       
+	                event = list[i];
+	                iMagnitude = event.magnitude;
+	                imgArr = m_getMapEqIcon(iMagnitude); //map함수 [imgurl, imgWidth, imgHeight]
+	       
+	                var iconStyle = new ol.style.Style({
+	                  image: new ol.style.Icon({
+	                    anchor: [0.5, 0.5],
+	                    anchorXUnits: 'fraction',
+	                    anchorYUnits: 'fraction',
+	                    opacity: 1.0,
+	                    src: imgArr[0],
+	                    size: [imgArr[1], imgArr[2]],
+	                  })
+	                });
+	                
+//                 	var parsed = fn_wgs84ToEpsg900913(event.lon, event.lat); // here
+	                feature = new ol.Feature({
+	                  geometry: new ol.geom.Point([event.lon, event.lat]), //geometry // here
+// 	                  geometry: new ol.geom.Point([parsed[0], parsed[1]]), //geometry // here
+	                  name: event.eqId,
+	                  eqId: event.eqId,             // 지진아이디
+	                  magnitude: event.magnitude,   // 규모
+	                  eqDt: event.eqDt,             // (event.eqDt != null)? event.eqDt: event.eqYmd; // 진원시
+ 	                  lat: event.lat,               // 위도 (데이터 반대로 입력됨) // here
+ 	                  lon: event.lon,               // 경도 (데이터 반대로 입력됨) // here
+//	                  lat: parsed[0],               // 위도 (데이터 반대로 입력됨) // here
+//	                  lon: parsed[1],               // 경도 (데이터 반대로 입력됨) // here 
+	                  feelingYn: event.feelingYn,   // 유감
+	                  depth: event.depth,           // 깊이
+	                  originArea: event.originArea, // 위치
+	                  velFile: event.velFile,       // 속도
+	                  accFile: event.accFile,       // 가속도
+	                  velFileSize: event.velFileSize,
+	                  accFileSize: event.accFileSize,                    
+	                  anDt: event.anDt,
+	                  magnitudeEwms: event.magnitudeEwms,
+	                  latEwms: event.latEwms,
+	                  eqDtEwms: event.eqDtEwms,
+	                  refer: event.refer,
+	                  originAreaEwms: event.originAreaEwms,
+	                  ewSn: event.ewSn,
+	                  lonEwms: event.lonEwms,
+	                  ewCode: event.ewCode,
+	                  popType: popType             // NO_POPUP(팝업없음), NO_MOVE(상세이동버튼없음)
+	                });
+	                feature.setStyle(iconStyle);
+	                sourceEq.addFeature(feature);
+	            }
+	            vectorEq.setSource(sourceEq);
+	       
+	            //process close
+	            if(vReturn != null){
+	              vReturn.close();
+	            }          
+	        },50);
+	    }
+	
+	    //관측소 마커 그리기 
+	    // - list(jsonType)
+	    // - pKind : null-관측소 수집icon(default) / 'Y'-관측소 종류별icon (관측망메뉴에서 사용)
+	    // - pCloseInclude : null-폐쇄는 제외(default) / 'Y'-폐쇄된 관측소 포함
+	    function m_addObMarker(list, pKind, pCloseInclude){
+	        m_clearOb(); //clear
+	      
+	        var sourceOb = new ol.source.Vector({});
+	      
+	        for(var i=0; i< list.length; i++) {
+	        //if (i == 0) {alert(i+":"+list[i].observeNm);}
+	          var event = list[i];
+	        
+	          //if (event.offdate == undefined ) {event.offdate="";}
+	          if (pCloseInclude != "Y" && (event.offdate != "" && event.offdate != undefined)) continue;   //close된건 pass
+	        
+	          var type = event.status ;
+	          var imgArr = [];
+	          if (pKind == 'Y') {
+	            imgArr = m_getMapObIconK(event.controlCd, event.staKind); //map함수 [imgurl, imgWidth, imgHeight]
+	          } else {
+	            imgArr = m_getMapObIcon(type); //map함수 [imgurl, imgWidth, imgHeight]
+	          }
+	      
+	          var iconStyle = new ol.style.Style({
+	            image: new ol.style.Icon({
+	              anchor: [0.5, 0.5],
+	              anchorXUnits: 'fraction',
+	              anchorYUnits: 'fraction',
+	              opacity: 1.00,
+	              src: imgArr[0],
+	              size: [imgArr[1], imgArr[2]]
+	            })
+	          });
+	          
+// 	          var parsed = fn_wgs84ToEpsg900913(event.longitude, event.latitude); // here
+	          var feature = new ol.Feature({
+	            geometry: new ol.geom.Point([event.longitude, event.latitude]), //geometry // here
+// 	            geometry: new ol.geom.Point([parsed[0], parsed[1]]), //geometry // here
+	            name: event.observeNm,      // attributes
+	            controlCd: event.controlCd,
+	            observeCd: event.observeCd, // 아이디
+	            observeNm: event.observeNm, // 관측소명
+	            lat: event.latitude,        // 위도 (데이터 반대로 입력됨) // here
+	            lon: event.longitude,       // 경도 (데이터 반대로 입력됨) // here
+// 	            lat: parsed[1],        // 위도 (데이터 반대로 입력됨) // here
+// 	            lon: parsed[0],       // 경도 (데이터 반대로 입력됨) // here
+	            staKind: event.staKind,     // 관측소종류
+	            status: event.status,       // 수신상태
+	            groupCd : event.groupCd
+	          });
+	          feature.setStyle(iconStyle);            
+	          sourceOb.addFeature(feature);
+	        }
+	        vectorOb.setSource(sourceOb);
+	    }
+	
+	    //지진지도 clear
+	    function m_clearEq() {
+	        if(controlSelectF != null) controlSelectF.unselectAll(); //말풍선삭제
+	        if(vectorEq.getSource() != null) vectorEq.getSource().clear();
+	    }
+	
+	    //관측소 clear
+	    function m_clearOb() {
+	        if(controlSelectF != null) controlSelectF.unselectAll(); //말풍선삭제
+	        if(vectorOb.getSource() != null) vectorOb.getSource().clear();          
+	    }
+	
+	    //지진, imageURL 설정
+	    function m_getMapEqIcon(iMagnitude) {
+	        var imgurl="https://necis.kma.go.kr/necis-dbf/assetsuser/images/", imgWidth=10, imgHeight=10;
+	        if ( iMagnitude < 1) {
+	          imgurl = imgurl + 'scale_level1.png';
+	          imgWidth = 10;
+	          imgHeight = 10;
+	        } else if ( iMagnitude < 2) {
+	          imgurl = imgurl + 'scale_level2.png';
+	          imgWidth = 10;
+	          imgHeight = 10;
+	        } else if (iMagnitude < 3) {
+	          imgurl = imgurl + 'scale_level3.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        } else if (iMagnitude < 4) {
+	          imgurl = imgurl + 'scale_level4.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        } else if (iMagnitude < 5) {
+	          imgurl = imgurl + 'scale_level5.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        } else if (iMagnitude < 6) {
+	          imgurl = imgurl + 'scale_level6.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        } else if(iMagnitude < 7){
+	          imgurl = imgurl + 'scale_level7.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        } else {
+	          imgurl = imgurl + 'scale_level8.png';
+	          imgWidth = 16;
+	          imgHeight = 16;
+	        }
+	        return [imgurl, imgWidth, imgHeight];
+	    }
+	
+	    //관측소, imageURL 설정
+	    function m_getMapObIcon(pState) {
+	        var imgurl = 'https://necis.kma.go.kr/necis-dbf/assetsuser/images/', imgWidth=12, imgHeight=12;
+	        imgWidth = 12;
+	        imgHeight = 12;
+	       
+	        if (pState == "1") {
+	          imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/icon_operate.png'; // 수신
+	        } else if (pState == "-1") {
+	          imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/icon_notrecive.png';  // 에러
+	        } else {
+	          imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/icon_breakdown.png'; // 미수신
+	        }
+	       
+	        return [imgurl, imgWidth, imgHeight];
+	    }
+	
+	    //관측소 종류, imageURL 설정
+	    function m_getMapObIconK(pControlCd, pStaKind) {
+	        var imgurl='https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico01.png', imgWidth=10, imgHeight=10;
+	        imgWidth = 12;
+	        imgHeight = 12;
+	          
+	        var imgColor = 'g_'; // default
+	       
+	        if(pControlCd == 'KMA')     { imgColor = 'g_'; }
+	        else if(pControlCd == 'KRC') { imgColor = 'b_'; }
+	        else if(pControlCd == 'KIGAM'){ imgColor = 'o_'; }
+	        else if(pControlCd == 'KEPRI'){ imgColor = 'p_'; }
+	        else if(pControlCd == 'KINS'){  imgColor = 'y_'; }
+	        else if(pControlCd == 'CDEA'){  imgColor = 'r_'; }
+	        else if(pControlCd == 'JMA'){ imgColor = 'gr_'; }
+	        else if(pControlCd == 'NIED'){  imgColor = 'w_'; }
+	        
+	        //event[7] staKind
+	        if (pStaKind == "초광대역+광대역+가속도관측소")     { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico01.png'; } // 지표형 초광대역 속도관측소  -- 초광대역+광대역+가속도
+	        else if(pStaKind == "광대역+가속도관측소")  { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico02.png'; } // 지표형 광대역 속도관측소     -- 광대역+가속도
+	        else if(pStaKind == "광대역(시추형)+가속도(시추형)관측소")  { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico03.png'; } // 시추형 광대역 속도관측소    -- 광대역(시추형)+가속도(시추형)
+	        else if(pStaKind == "가속도(시추형)관측소") { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico04.png'; } // 시추형 (광대역) 가속도관측소 -- 가속도(시추형)
+	        else if(pStaKind == "단주기+가속도관측소")  { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico05.png'; } // 지표형 단주기 속도관측소             -- 단주기+가속도
+	        else if(pStaKind == "가속도관측소관측소")     { imgurl = 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/ico06.png'; } // 지표형 (광대역) 가속도관측소   -- 가속도
+	        //else if(pStaKind == "시추형 단주기 속도 관측소")       { imgurl = 'ico06.png'; } // 시추형 단주기 속도 관측소 ???
+	        //else if(pStaKind == "시추공 가속도관측소") { imgurl = 'ico08.png'; } 
+	        //else if(pStaKind == "지진해일관측소")     { imgurl = 'ico09.png'; }//
+	        //else if(pStaKind == "어레이관측소")      { imgurl = 'ico10.png'; }//
+	        //else if(pStaKind == "음파")            { imgurl = 'ico11.png'; }// 
+	        //else if(pStaKind == "지자기관측소")      { imgurl = 'ico12.png'; }//
+	       
+	        //imgurl = '/necis-dbf/assetsuser/images/ico/' + imgColor + imgurl;
+	        imgurl = '/necis-dbf/assetsuser/images/newIco/' + imgColor + imgurl;
+	        return [imgurl, imgWidth, imgHeight];
+	    }
+	
+	    //----------------------------------------------팝업 
+	    //팝업 호출(상세) : 지진/관측소
+	    function m_createPopup(feature) {
+	      //alert("call:popup"+ feature.popup.id);
+	        var sLayerType = '';
+	        if (feature.layer.name == C_EQ_NM ) {
+	          sLayerType = "EQ";
+	        } else if (feature.layer.name == C_OB_NM ) {
+	          sLayerType = "OB";  //관측소
+	        }
+	        
+	        //각 jsp에서 지진클릭시 지진정보grid표시하는 function 호출  createEqPopup  . option.
+	        if (sLayerType == "EQ") try {call_markerClicked(feature); } catch(err) {}
+	        
+	        ////팝업없음
+	        if (feature.attributes.popType == "NO_POPUP")  return ;   
+	     
+	        if (feature.popup != null){ return;}
+	     
+	        var content = "";   //팝업내용
+	        if (sLayerType == "EQ")      
+	          content = m_getEqPopConts(feature);
+	        else if (sLayerType == "OB") 
+	          content = m_getObPopConts(feature);
+	     
+	        feature.popup = new OpenLayers.Popup.FramedCloud("pop", //id
+	            feature.geometry.getBounds().getCenterLonLat(), //lonlat
+	            null,       //contentSize
+	            content,    //contentHTML
+	            null,
+	            true, 
+	            function() {   //closeBoxCallback :선택해지
+	              m_destroyMapPopup(feature); 
+	            }
+	        );
+	        map.addPopup(feature.popup);
+	      
+	    }
+	
+	    //팝업삭제
+	    function m_destroyMapPopup(feature) {
+	     
+	        //팝업삭제
+	        if (feature.popup != null) {
+	          feature.popup.destroy();
+	          feature.popup = null;
+	        }
+	    }
+	
+	    //지진 팝업 contents
+	    function m_getEqPopConts(feature) {
+	        var vAttr = feature.attributes;
+	        
+	      
+	        var content = '<table  width="100%" ><thead>'   //infobox_table2
+	                + '<tr><th>진원시(KST)</th><th>위도</th><th>경도</th><th>규모</th></tr></thead>'
+	                + '<tbody><tr><td>' 
+	            + vAttr.eqDt + '</td><td>' + vAttr.lon + '</td><td>' 
+	            + vAttr.lat + '</td><td>' + vAttr.magnitude + '</td></tr> </tbody>' ;
+	      
+	        //상세화면 이동 버튼  (fn_view_detail : 화면마다 다른이동)
+	        var contsMove;
+	        if ( vAttr.popType == "NO_MOVE") 
+	           contsMove = '<div class="infobox_table3">'+content+'</table></div>';
+	        else contsMove = '<div class="infobox_table3">'+content+
+	          '</table></div><div class="btn_detail"><a href="#" onclick="fn_view_detail(\'' +vAttr.eqId + '\', \'' +vAttr.magnitude + '\', \'' + vAttr.depth + '\', \'' +vAttr.eqDt + '\', \'' + vAttr.lon + '\', \'' + vAttr.lat + '\');"><img src="/necis-dbf/assetsuser/images/btn/btn_detail.png" title="상세보기"></a></div>';
+	      
+	        return contsMove;
+	    }
+	
+	
+	    //----------------------------------- 관측소 다중선택 제어 (continuouswave.jsp용 )
+	
+	    //(관측소)선택모드/해제 Control Toggle
+	    function m_ctrlToggle(pType){
+	        if (pType == 'BOX') {
+	          controlObBox.activate();
+	          selectFeatureCOb.deactivate();
+	        } else {
+	          controlObBox.deactivate();
+	          selectFeatureCOb.activate();
+	        }
+	    }
+	
+	    //List에 선택/해지된 관측소를 지도에 선택/해지 연동
+	    //- pCheck : 선택여부 (true/false)
+	    //- pId : 관측소id, 'ALL'이면 전체
+	    function m_selectToMap(pCheck, pId) {
+	      //selectFeatureCOb   controlObBox
+	        for (var key = 0 ; key < vectorOb.features.length;  key++) {  
+	          if (pId == 'ALL' ) {
+	            (pCheck) ? selectFeatureCOb.select(vectorOb.features[key]) : selectFeatureCOb.unselect(vectorOb.features[key]);
+	          }
+	          else if (pId == vectorOb.features[key].attributes.observeCd) {
+	            // - m_selectIcon, m_unSelectIcon 구동됨
+	            (pCheck) ? selectFeatureCOb.select(vectorOb.features[key]) : selectFeatureCOb.unselect(vectorOb.features[key]);
+	            break;
+	          }
+	        }
+	        
+	    }
+	
+	    //icon 선택/해지 변경
+	    //- feature : 관측소의 feature
+	    //- pCheck : 선택여부 (true/false)
+	    function fn_ImageChange(feature, pCheck) {
+	        if (pCheck) 
+	          feature.style.externalGraphic = 'https://necis.kma.go.kr/necis-dbf/assetsuser/images/icon_operatesel.png';  // 선택 관측소
+	        else feature.style.externalGraphic = 'https://necis.kma.go.kr/necis-dbf/assetsuser/images/icon_operatenotsel.png'; //기본 관측소
+	        
+	        vectorOb.redraw();
+	     
+	    }
+	
+	    //icon  선택
+	    //- feature : 관측소의 feature
+	    function m_selectIcon(feature) {
+	        fn_ImageChange(feature, true);
+	        
+	        try {
+	          //중복실행 위험
+	          call_checkObToList(true, feature.attributes.observeCd);   //각jsp꺼. 목록에 체크동기화 
+	        } catch(err) {}
+	    }
+	
+	    //icon 선택해지
+	    //- feature : 관측소의 feature
+	    function m_unSelectIcon(feature) {
+	        fn_ImageChange(feature, false);
+	        
+	        try {
+	          //중복실행 위험
+	          call_checkObToList(false, feature.attributes.observeCd);   //각jsp꺼
+	        } catch(err) {}
+	    }
+	
+	    //---------------------------------------파일로 저장
+	    //지도를 파일로 저장
+	    function m_saveImage(pDiv){
+	        
+	        if (m_isCanvasSupported() == false) {
+	          alert("Explore 8 이전 버전은 지도저장을 지원하지 않습니다.");
+	          try {fn_saveImageCallback(); } catch(err){}  //호출처에 완료를 알림
+	          return;
+	        }
+	      
+	        var ua = window.navigator.userAgent;
+	        if(ua.indexOf('MSIE') > 0 || ua.indexOf('Trident') > 0) {
+	          //exploer인경우
+	          //html2canvas가 exploer는 지원하지 않음
+	          fn_addLayerVector(pDiv); //지형도가져온후 저장
+	        } else {
+	          //exploer 외 경우
+	          window.open("/necis-dbf/usernl/comm/map_canvasPop.do?divNm="+pDiv, 'export', 'width=600, height=700');  
+	          
+	          try {fn_saveImageCallback(); } catch(err){}  //호출처에 완료를 알림
+	        }
+	    }
+	
+	    //지형도 출력을위해 wfs로 호출
+	    function fn_addLayerVector (pDiv) {
+	       if (vectorBase != null) {
+	         vectorBase.setVisibility(true);  //보이게
+	         fn_exportMap(pDiv);
+	         return true;
+	       }
+	      
+	       vectorBase = new OpenLayers.Layer.Vector(
+	                 "exportBase",
+	                 {
+	                     strategies: [new OpenLayers.Strategy.BBOX()]
+	                     ,renderers: ["Canvas", "SVG", "VML"]  //ham
+	                     , projection: new OpenLayers.Projection("EPSG:4326") // here
+// 	                     , projection: new OpenLayers.Projection("EPSG:900913") // here
+	                     , protocol: new OpenLayers.Protocol.WFS({
+	                         version: "1.1.0",
+	                         url: 'http://gis.necis.kma.go.kr:8080/geoserver/NECIS/wms'+'/wfs',
+	                         featurePrefix: 'necis',    //geoserver worspace name
+	                         featureType: "countries",  //geoserver Layer Name  featureType
+	                         geometryName: "the_geom"  // field in Feature Type details with type "Geometry"
+	                    })
+	                     ,styleMap: new OpenLayers.StyleMap({'default':{
+	                         strokeColor: "#808080",
+	                         //strokeOpacity: 0.5,
+	                         strokeWidth: 0.5,
+	                         fillColor: "#d3d3d3",
+	                         fillOpacity: 1,
+	                     }})
+	                    ,'displayInLayerSwitcher':false  
+	                 });   
+	      
+	       map.addLayer(vectorBase);
+	       map.setLayerIndex(vectorBase, 1); //순서를 뒤로
+	      
+	       //-- 속도오래걸려서.
+	       vectorBase.events.on({"loadend": function(e){ fn_exportMap(pDiv); }  });
+	      
+	    }
+	
+	    //지도저장. exploer와 crom browser에 따라 다른처리... (특이:crom은 위에서 별도팝업처리 했으므로 사실 여기 안와. )
+	    function fn_exportMap(pDiv){
+	      
+	      try {fn_saveImageCallback(); } catch(err){}  //호출처에 완료를 알림
+	      
+	      var mDiv = document.getElementById(pDiv);
+	      html2canvas( mDiv ).then(function(canvas) {
+	      
+	        if (navigator.msSaveBlob) {
+	          // Explorer
+	          var URL=window.URL;
+	          var BlobBuilder = window.MSBlobBuilder;
+	            navigator.saveBlob=navigator.msSaveBlob;
+	            var imgBlob = canvas.msToBlob();
+	              
+	            if (BlobBuilder && navigator.saveBlob) {
+	                var showSave =  function (data, name, mimetype) {
+	                  var builder = new BlobBuilder();
+	                  builder.append(data);
+	                  var blob = builder.getBlob(mimetype||"application/octet-stream");
+	                  if (!name)  name = "Download.bin";
+	                  navigator.saveBlob(blob, name);
+	                };
+	                showSave(imgBlob, 'https://necis.kma.go.kr/necis-dbf/usermain/new/common/mapLayerE.png',"image/png");
+	            }
+	        } else {
+	          
+	          if ($('#export-image-container').length == 0)
+	                    $('body').append('<a id="export-image-container" download="https://necis.kma.go.kr/necis-dbf/usermain/new/common/mapLayerC.jpg">');
+	              img = canvas.toDataURL("image/jpeg");
+	              img = img.replace('data:image/jpeg;base64,', '');
+	              finalImageSrc = 'data:image/jpeg;base64,' + img;
+	      
+	              $('#export-image-container').attr('href', finalImageSrc);
+	              $('#export-image-container')[0].click();
+	              $('#export-image-container').remove();
+	        }
+	        
+	        vectorBase.setVisibility(false); 
+	
+	      });
+	    }
+	
+	    //-----------------------------------------------------------------
+	
+	    //canvas 지원가능한 버전인지 체크 (exploer8이전은 불가능.   canvase사용 - 지도저장, idw(shakeMap))
+	    function m_isCanvasSupported(){
+	      if (typeof(document.createElement("canvas").getContext) != "function") return false;
+	      else return true;
+	    }
+	
+	    ///////////////////////////////////////////////////
+	    // 지진 이벤트 검색을 위한 컨트롤
+	
+	    function find_before_date(num){
+	      var today = new Date((new Date()).valueOf() - 1000*60*60*24*num);          
+	      var dd = today.getDate();
+	      var mm = today.getMonth()+1; //January is 0!
+	      var yyyy = today.getFullYear();
+	      if(dd<10) {
+	          dd='0'+dd
+	      }
+	      if(mm<10) {
+	          mm='0'+mm
+	      } 
+	      today = yyyy+'-'+mm+'-'+dd;
+	      return today;
+	    }
+	
+	    // 발생기간 콤보박스
+	    function fn_select_change(val){
+	      var form = document.mainForm;
+	      if(val == "last7days") {
+	        form.startDate.value=find_before_date(7);
+	        form.endDate.value=find_before_date(0);
+	        form.startDate.disabled = true;
+	        form.endDate.disabled = true;
+	      } else if(val == "last30days") {
+	        form.startDate.value=find_before_date(30);
+	        form.endDate.value=find_before_date(0);
+	        form.startDate.disabled = true;
+	        form.endDate.disabled = true;
+	      }  else if(val == "custom") {
+	        form.startDate.disabled = false;
+	        form.endDate.disabled = false;
+	        form.startDate.value=find_before_date(90);
+	        form.endDate.value=find_before_date(0);
+	      }
+	    }
+	
+	    function fn_callCalendar(arg) {
+	      var form = document.mainForm;
+	      form.startDate.disabled = false;
+	      form.endDate.disabled = false;
+	      form.selectDate.value = "custom"
+	
+	      if(arg == 1) {
+	        fn_egov_NormalCalendar(form, form.date1View, form.startDate);
+	      }else if(arg == 2){
+	        fn_egov_NormalCalendar(form, form.date2View, form.endDate);
+	      } else {
+	        alert("검색일자 지정은 사용자 지정일때만 가능합니다.");
+	      }
+	    }
+	
+	    function fn_validCheck(){
+	      var form = document.mainForm;
+	      
+	      var selectDate = form.selectDate.value;
+	      var startDate = form.startDate.value;
+	      var endDate = form.endDate.value;
+	      var startMagnitude = form.startMagnitude.value;
+	      var endMagnitude = form.endMagnitude.value;
+
+	      var startDepth = form.startDepth.value;
+	      var endDepth = form.endDepth.value;
+	      var searchWord = escape(encodeURIComponent(form.searchWord.value));
+	      
+	      // 사용자 지정일때 검색조건이 하나도 안들어간 경우에는 경고창을 띄우고 검색창에 focus 이동하고 return 하기
+	      if(form.selectDate.value == "custom") {
+	        // 시작, 종료, 규모처음, 규모끝, 위도처음, 위도끝, 경도처음, 경도끝, 검색어
+	        // && startLat == "" && endLat == "" && startLon == "" && endLon == ""
+	        if(startDate == "" && endDate == "" && startMagnitude == "" && endMagnitude == ""  && searchWord == "") {
+	          alert("검색조건을 하나이상 입력해주세요.");
+	          form.startDate.focus();
+	          return;
+	        }            
+	      }
+	
+	      if(startDate != "" || endDate != ""){
+	        if(startDate.charAt(4) != '-' || startDate.charAt(7) != '-'){
+	          alert("시작 일자에 2012-01-01 형식으로 입력해주세요");
+	          return;
+	        }
+	
+	        if(endDate.charAt(4) != '-' || endDate.charAt(7) != '-'){
+	          alert("종료 일자에 2012-01-01 형식으로 입력해주세요");
+	          return;
+	        }
+	        
+	        if(startDate.length!=10){
+	          alert("시작 일자에 2012-01-01 형식으로 입력해주세요");
+	          return;
+	        }
+	        
+	        if(endDate.length!=10){
+	          alert("종료 일자에 2012-01-01 형식으로 입력해주세요");
+	          return;
+	        }
+	      }
+	     
+	      //규모 체크
+	      if($("#startMagnitude").val().length != 0){
+	          var pattern1 = /^[0-9]{1}\.[0-9]/;
+	          var pattern2 = /^[0-9]{2}\.[0-9]/;
+	          if(!pattern1.test($("#startMagnitude").val()) && !pattern2.test($("#startMagnitude").val())){
+	          alert("규모 시작값을 정확하게 입력해주세요. ex)1.0");
+	          $("#startMagnitude").focus();
+	          return;
+	           }
+	      }
+	      if($("#endMagnitude").val().length != 0){
+	          if($("#endMagnitude").val().length != 0){
+	            var pattern1 = /^[0-9]{1}\.[0-9]/;
+	            var pattern2 = /^[0-9]{2}\.[0-9]/;
+	            if(!pattern1.test($("#endMagnitude").val()) && !pattern2.test($("#endMagnitude").val())){
+	            alert("규모 종료값을 정확하게 입력해주세요. ex)1.0");
+	            $("#endMagnitude").focus();
+	            return;
+	             }
+	        }
+	      }
+	
+	      if($("#startMagnitude").val().length == 3 && $("#endMagnitude").val().length == 0 ){
+	          alert("규모를 정확하게 입력해주세요. ex)1.0");
+	          $("#endMagnitude").focus();
+	          return;
+	      }
+	      if($("#endMagnitude").val().length == 3 && $("#startMagnitude").val().length == 0 ){
+	          alert("규모를 정확하게 입력해주세요. ex)1.0");
+	          $("#startMagnitude").focus();
+	          return;
+	      }
+	      
+	      if(parseFloat(startMagnitude) > parseFloat(endMagnitude)){
+	        alert("규모의 종료값을 시작값보다 크게 입력하세요.");
+	        $("#startMagnitude").focus();
+	        return;
+	      }
+
+	    }
+	
+	    function displayError(){
+	          alert("데이터를 가져오는 도중 오류가 발생했습니다.");
+	      }
+	    
+	    function fn_reset(){
+	      var form = document.mainForm;
+	      form.selectDate.value = "custom"; // 발생기간(콤보)
+	
+	      form.startDate.value = find_before_date(90);
+	      form.endDate.value = find_before_date(0);
+	      form.startMagnitude.value = "0.0";
+	      form.endMagnitude.value = "10.0";
+	      /* form.startLat.value = "";
+	      form.endLat.value = "";
+	      form.startLon.value = "";
+	      form.endLon.value = ""; */
+	      form.startDepth.value = "";
+	      form.endDepth.value = "";
+	      form.searchWord.value = "";
+	/*
+	      //document.getElementById("selectDate").value = "last30days"; // 발생기간(콤보)
+	      document.getElementById("startDate").value= "2016-02-24";
+	      document.getElementById("endDate").value="2016-03-02";
+	      document.getElementById("startMagnitude").value = "";   // 규모범위(시작)
+	      document.getElementById("endMagnitude").value = "";     // 규모범위(종료)
+	      document.getElementById("startLon").value = "";         // 위도범위(시작)
+	      document.getElementById("endLon").value = "";           // 위도범위(종료)
+	      document.getElementById("startLat").value = "";         // 경도범위(시작)
+	      document.getElementById("endLat").value = "";           // 경도범위(종료)
+	      document.getElementById("searchWord").value = "";       // 검색어
+	      document.mainForm.selectDate.onchange();
+	*/
+	//      fn_cancel();  //상세검색취소
+	      fn_SearchForEvent(); // 지진 조회
+	    }
+	
+	    function fn_earthquakeListOrder(){
+	//       var form = document.mainForm;
+	//       order = form.earthquakeListOrder.value;
+	      var order = $("input[name=earthquakeListOrder]:checked").val();
+	      
+	      if(order == "newer"){
+	        eqList.sort(function(a, b){return a.eqId-b.eqId});
+	      }else if(order == "older"){
+	        eqList.sort(function(a, b){return b.eqId-a.eqId});
+	      }else if(order == "bigger"){
+	        eqList.sort(function(a, b){return a.magnitude-b.magnitude});
+	      }else if(order =="smaller"){
+	        eqList.sort(function(a, b){return b.magnitude-a.magnitude});
+	      }
+	      m_addEqList(eqList);
+	    }
+	    
+	    
+	    ///////////////////////////////////////////////////
+	    // 관측소/지진 표출
+	
+	    m_addMapEqEvent();  //지진 vector추가. 클릭이벤트 추가
+	    fn_SearchForEvent(); //지진 조회
+	
+	    m_addMapOb();
+	    fn_SearchObserve();
+	    
+	    $("#obImg").hide();
+		$("#eqImg").hide();
+	    toggleLayer("vectorEq", true);
+	</script>
+	<script>
+	function fn_wgs84ToEpsg900913(lat, lon){
+		var ellipseConst = 6378137 * Math.PI / 180;
+		var x = lat * ellipseConst;
+		var y = Math.log(Math.tan((90 + Number(lon)) * Math.PI / 360)) / (Math.PI / 180);
+		y = y * ellipseConst;
+		return [x, y];
+	}
+	</script>
+
+<!-- Mirrored from necis.kma.go.kr/necis-dbf/usermain/new/common/mainMapForm.do by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 17 Sep 2020 10:39:34 GMT -->
+</html>
+<script src="https://necis.kma.go.kr/necis-dbf/js/ui_common.js"></script>
